@@ -125,4 +125,17 @@ public class GmailExploreApplication {
             }
         }
     }
+
+    private static void getHtmlTextFromMessageParts(List<MessagePart> messageParts, StringBuilder sb) {
+        if (messageParts != null) {
+            for (MessagePart messagePart: messageParts) {
+                if(messagePart.getMimeType().equals("text/html")){
+                    sb.append(messagePart.getBody().getData());
+                }
+                if (messagePart.getParts() != null) {
+                    getPlainTextFromMessageParts(messagePart.getParts(), sb);
+                }
+            }
+        }
+    }
 }
