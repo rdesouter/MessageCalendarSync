@@ -20,10 +20,10 @@ import com.google.api.services.gmail.model.MessagePartHeader;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+//import javax.mail.MessagingException;
+//import javax.mail.Session;
+//import javax.mail.internet.InternetAddress;
+//import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
@@ -59,7 +59,7 @@ public class GmailExploreApplication {
         return new AuthorizationCodeInstalledApp(flow, serverReceiver).authorize("user-test");
     }
 
-    public static void main(String[] args) throws GeneralSecurityException, IOException, MessagingException {
+    public static void main(String[] args) throws GeneralSecurityException, IOException {
         SpringApplication.run(GmailExploreApplication.class, args);
         System.out.println("Gmail Api Running...");
 
@@ -75,9 +75,8 @@ public class GmailExploreApplication {
         * for searching in main inbox between two date
         * category:primary after:2020/10/18 before:2020/11/2
          * */
-        ListMessagesResponse messageList = gmailService.users().messages().list("me").setQ("category:primary").setMaxResults(1L).execute();
+        ListMessagesResponse messageList = gmailService.users().messages().list("me").setQ("category:primary").setMaxResults(2L).execute();
         List<Message> messages = messageList.getMessages();
-        sendGmail(gmailService);
 
         if (messageList.isEmpty()) {
             System.out.println("No message found");
@@ -102,17 +101,20 @@ public class GmailExploreApplication {
                         }
 
                         StringBuilder sb = new StringBuilder();
-                        getPlainTextFromMessageParts(message.getPayload().getParts(), sb);
-                        System.out.println("base64 bodyparts: " + sb);
-                        byte[] bodyBytes = Base64.decodeBase64(sb.toString());
-                        String text = new String(bodyBytes, StandardCharsets.UTF_8);
-                        System.out.println("utf8 decoded bodyparts: \n"+ text);
-
-
+                        
+                        if (message.getPayload().getParts() == null){
+                            String body = new String(Base64.decodeBase64(message.getPayload().getBody().getData()), StandardCharsets.UTF_8);
+                            System.out.println("message without parts: \n " + body);
+                        }else {
+//                            getPlainTextFromMessageParts(message.getPayload().getParts(), sb);
+                            getHtmlTextFromMessageParts(message.getPayload().getParts(), sb);
+                            System.out.println("base64 bodyparts: " + sb);
+                            byte[] bodyBytes = Base64.decodeBase64(sb.toString());
+                            String text = new String(bodyBytes, StandardCharsets.UTF_8);
+                            System.out.println("utf8 decoded bodyparts: \n"+ text);
+                        }
                     }
-
             }
-
         }
 
     }
@@ -136,7 +138,9 @@ public class GmailExploreApplication {
     private static void getHtmlTextFromMessageParts(List<MessagePart> messageParts, StringBuilder sb) {
         if (messageParts != null) {
             for (MessagePart messagePart: messageParts) {
+                System.out.println(messagePart);
                 if(messagePart.getMimeType().equals("text/html")){
+                    System.out.println(messagePart.getBody().getData());
                     sb.append(messagePart.getBody().getData());
                 }
                 if (messagePart.getParts() != null) {
@@ -146,49 +150,49 @@ public class GmailExploreApplication {
         }
     }
 
-    private static void sendGmail(Gmail gmailService) throws MessagingException, IOException {
-        MimeMessage mimeMessage = createEmail("<email of destination>", "<email of sender>", "Test lalala", "body of email");
-        Message response = sendMessage(gmailService, "<email of user>", mimeMessage);
-    }
+//    private static void sendGmail(Gmail gmailService) throws MessagingException, IOException {
+//        MimeMessage mimeMessage = createEmail("<email of destination>", "<email of sender>", "Test lalala", "body of email");
+//        Message response = sendMessage(gmailService, "<email of user>", mimeMessage);
+//    }
 
-    public static MimeMessage createEmail(String to,
-                                          String from,
-                                          String subject,
-                                          String bodyText)
-            throws MessagingException {
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
+//    public static MimeMessage createEmail(String to,
+//                                          String from,
+//                                          String subject,
+//                                          String bodyText)
+//            throws MessagingException {
+//        Properties props = new Properties();
+//        Session session = Session.getDefaultInstance(props, null);
+//
+//        MimeMessage email = new MimeMessage(session);
+//
+//        email.setFrom(new InternetAddress(from));
+//        email.addRecipient(javax.mail.Message.RecipientType.TO,
+//                new InternetAddress(to));
+//        email.setSubject(subject);
+//        email.setText(bodyText);
+//        return email;
+//    }
 
-        MimeMessage email = new MimeMessage(session);
+//    private static Message createMessageWithEmail(MimeMessage emailContent)
+//            throws MessagingException, IOException {
+//        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+//        emailContent.writeTo(buffer);
+//        byte[] bytes = buffer.toByteArray();
+//        String encodedEmail = Base64.encodeBase64URLSafeString(bytes);
+//        Message message = new Message();
+//        message.setRaw(encodedEmail);
+//        return message;
+//    }
 
-        email.setFrom(new InternetAddress(from));
-        email.addRecipient(javax.mail.Message.RecipientType.TO,
-                new InternetAddress(to));
-        email.setSubject(subject);
-        email.setText(bodyText);
-        return email;
-    }
-
-    private static Message createMessageWithEmail(MimeMessage emailContent)
-            throws MessagingException, IOException {
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        emailContent.writeTo(buffer);
-        byte[] bytes = buffer.toByteArray();
-        String encodedEmail = Base64.encodeBase64URLSafeString(bytes);
-        Message message = new Message();
-        message.setRaw(encodedEmail);
-        return message;
-    }
-
-    private static Message sendMessage(Gmail service,
-                                      String userId,
-                                      MimeMessage emailContent)
-            throws MessagingException, IOException {
-        Message message = createMessageWithEmail(emailContent);
-        message = service.users().messages().send(userId, message).execute();
-
-        System.out.println("Message id: " + message.getId());
-        System.out.println(message.toPrettyString());
-        return message;
-    }
+//    private static Message sendMessage(Gmail service,
+//                                      String userId,
+//                                      MimeMessage emailContent)
+//            throws MessagingException, IOException {
+//        Message message = createMessageWithEmail(emailContent);
+//        message = service.users().messages().send(userId, message).execute();
+//
+//        System.out.println("Message id: " + message.getId());
+//        System.out.println(message.toPrettyString());
+//        return message;
+//    }
 }
