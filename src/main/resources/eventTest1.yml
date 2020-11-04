@@ -1,0 +1,5 @@
+messageMap:
+  phone: "Téléphone :"
+  begin: "Date de début :"
+  end: "Date de début :"
+  address: "Adresse :"

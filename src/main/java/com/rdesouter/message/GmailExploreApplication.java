@@ -1,5 +1,7 @@
 package com.rdesouter.message;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -11,12 +13,14 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.Base64;
 import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
+import com.rdesouter.utils.StringHandling;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -27,25 +31,24 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import static javax.mail.Message.RecipientType.TO;
 
 @SpringBootApplication
-public class GmailExploreApplication implements MessageConstant {
+public class GmailExploreApplication implements MessageConstant{
 
     private static final String APPLICATION_NAME = "Noron Gmail API";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens/gmail";
+    private static final String USER_ID = "user-test";
 
-    private static final List<String> SCOPES = Arrays.asList(GmailScopes.GMAIL_READONLY, GmailScopes.GMAIL_SEND);
-    private static final String CREDENTIALS_FILE_PATH = "/gmail-credentials.json";
+    private static final List<String> SCOPES = Arrays.asList(GmailScopes.GMAIL_READONLY, GmailScopes.GMAIL_SEND, CalendarScopes.CALENDAR, CalendarScopes.CALENDAR_EVENTS_READONLY);
+    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         InputStream in = GmailExploreApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
@@ -61,26 +64,32 @@ public class GmailExploreApplication implements MessageConstant {
                 .build();
         LocalServerReceiver serverReceiver = new LocalServerReceiver.Builder().setPort(8888).build();
 
-        return new AuthorizationCodeInstalledApp(flow, serverReceiver).authorize("user-test");
+        return new AuthorizationCodeInstalledApp(flow, serverReceiver).authorize(USER_ID);
     }
 
-    public static void main(String[] args) throws GeneralSecurityException, IOException {
+    public static void main(String[] args) throws GeneralSecurityException, IOException, MessagingException {
         SpringApplication.run(GmailExploreApplication.class, args);
-        System.out.println("Gmail Api Running...");
+        System.out.println("Google's API Running...");
 
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Gmail gmailService =
                 new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                             .setApplicationName(APPLICATION_NAME)
                             .build();
+        getMessages(gmailService);
+//        sendGmail(gmailService);
 
+    }
+
+    private static void getMessages(Gmail gmailService) throws IOException {
         /*
         * setQ("labe:yourLabelInGmail")
         * params can be the same in search
         * for searching in main inbox between two date
         * category:primary after:2020/10/18 before:2020/11/2
+        * label:yourmail@domain.be
          * */
-        ListMessagesResponse messageList = gmailService.users().messages().list("me").setQ("category:primary").setMaxResults(2L).execute();
+        ListMessagesResponse messageList = gmailService.users().messages().list("me").setQ("label:dev@papymousse.be after:2020/11/04").setMaxResults(2L).execute();
         List<Message> messages = messageList.getMessages();
 
         if (messageList.isEmpty()) {
@@ -106,22 +115,48 @@ public class GmailExploreApplication implements MessageConstant {
                         }
 
                         StringBuilder sb = new StringBuilder();
-                        
+
                         if (message.getPayload().getParts() == null){
                             String body = new String(Base64.decodeBase64(message.getPayload().getBody().getData()), StandardCharsets.UTF_8);
                             System.out.println("message without parts: \n " + body);
                         }else {
-//                            getPlainTextFromMessageParts(message.getPayload().getParts(), sb);
-                            getHtmlTextFromMessageParts(message.getPayload().getParts(), sb);
+                            getPlainTextFromMessageParts(message.getPayload().getParts(), sb);
+//                            getHtmlTextFromMessageParts(message.getPayload().getParts(), sb);
                             System.out.println("base64 bodyparts: " + sb);
                             byte[] bodyBytes = Base64.decodeBase64(sb.toString());
                             String text = new String(bodyBytes, StandardCharsets.UTF_8);
                             System.out.println("utf8 decoded bodyparts: \n"+ text);
+
+                            String[] contentSplitted = StringHandling.splitNewLine(text);
+
+                            List<String> elements = new ArrayList<>();
+
+                            ClassLoader cL = Thread.currentThread().getContextClassLoader();
+
+                            File file = new File(cL.getResource("eventTest.yml").getFile());
+                            ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+                            EventTest event = objectMapper.readValue(file, EventTest.class);
+                            System.out.println(event);
+
+                            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+                            mapper.findAndRegisterModules();
+                            EventMap eventMap = mapper.readValue(new File(cL.getResource("eventTest1.yml").getFile()), EventMap.class);
+
+                            //extract all value from key in eventTest1.yml and add to map
+                            // TODO preferably convert into hashmap
+                            for (Map.Entry<String, String> e: eventMap.messageMap.entrySet()){
+                                Arrays.stream(contentSplitted).filter(x -> x.contains(e.getValue())).findFirst().filter(x -> elements.add(StringHandling.extract(x, e.getValue(),false)));
+                            }
+
+
+                            Arrays.stream(contentSplitted).filter(x -> x.contains("Téléphone")).findFirst().filter(x -> elements.add(StringHandling.extract(x,"Téléphone :",false)));
+                            String phoneExtract = StringHandling.extract(text, "Téléphone :", false);
+                            System.out.println(phoneExtract);
+
                         }
                     }
             }
         }
-
     }
 
     private static void getPlainTextFromMessageParts(List<MessagePart> messageParts, StringBuilder sb) {
@@ -215,4 +250,5 @@ public class GmailExploreApplication implements MessageConstant {
         message.setRaw(encodedEmail);
         return message;
     }
+
 }
