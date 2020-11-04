@@ -37,14 +37,14 @@ public class CalendarExploreApplication {
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    private static final String CREDENTIALS_FILE_PATH = "/²²²²²²²²²aaaaacredentials.json";
 
     /**
      * Creates an authorized Credential object.
      *
      * @param HTTP_TRANSPORT The network HTTP Transport.
      * @return An authorized Credential object.
-     * @throws IOException If the credentials.json file cannot be found.
+     * @throws IOException If the gmail-credentials.json file cannot be found.
      */
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         //Load client secrects
