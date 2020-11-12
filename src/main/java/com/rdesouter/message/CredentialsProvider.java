@@ -11,6 +11,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.gmail.GmailScopes;
+import com.rdesouter.MessageCalendarSyncApplication;
 
 import java.io.*;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public class CredentialsProvider {
 
 
     public static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        InputStream in = GmailExploreApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = MessageCalendarSyncApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Credentials file not found: " + CREDENTIALS_FILE_PATH);
         }

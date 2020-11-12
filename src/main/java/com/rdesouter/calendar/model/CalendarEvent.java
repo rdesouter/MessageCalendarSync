@@ -1,4 +1,4 @@
-package com.rdesouter.model;
+package com.rdesouter.calendar.model;
 
 import java.util.ArrayList;
 import java.util.Map;

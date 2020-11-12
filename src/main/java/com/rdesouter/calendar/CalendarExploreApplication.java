@@ -66,7 +66,7 @@ public class CalendarExploreApplication {
 
     public static void main(String[] args) throws GeneralSecurityException, IOException {
 
-        SpringApplication.run(CalendarExploreApplication.class, args);
+//        SpringApplication.run(CalendarExploreApplication.class, args);
         System.out.println("API Runing....");
 
 
