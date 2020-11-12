@@ -129,14 +129,15 @@ public class GmailExploreApplication implements MessageConstant{
 
                             String[] contentSplitted = StringHandling.splitNewLine(text);
 
-                            List<String> elements = new ArrayList<>();
+//                            List<String> elements = new ArrayList<>();
+                            HashMap<String, String> eventHashMap = new HashMap<>();
 
                             ClassLoader cL = Thread.currentThread().getContextClassLoader();
 
-                            File file = new File(cL.getResource("eventTest.yml").getFile());
-                            ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-                            EventTest event = objectMapper.readValue(file, EventTest.class);
-                            System.out.println(event);
+//                            File file = new File(cL.getResource("eventTest.yml").getFile());
+//                            ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+//                            EventTest event = objectMapper.readValue(file, EventTest.class);
+//                            System.out.println(event);
 
                             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
                             mapper.findAndRegisterModules();
@@ -145,13 +146,11 @@ public class GmailExploreApplication implements MessageConstant{
                             //extract all value from key in eventTest1.yml and add to map
                             // TODO preferably convert into hashmap
                             for (Map.Entry<String, String> e: eventMap.messageMap.entrySet()){
-                                Arrays.stream(contentSplitted).filter(x -> x.contains(e.getValue())).findFirst().filter(x -> elements.add(StringHandling.extract(x, e.getValue(),false)));
+                                Arrays.stream(contentSplitted)
+                                        .filter(x -> x.contains(e.getValue()))
+                                        .findFirst()
+                                        .ifPresent(x -> eventHashMap.put(e.getKey(),StringHandling.extract(x, e.getValue(),false)));
                             }
-
-
-                            Arrays.stream(contentSplitted).filter(x -> x.contains("Téléphone")).findFirst().filter(x -> elements.add(StringHandling.extract(x,"Téléphone :",false)));
-                            String phoneExtract = StringHandling.extract(text, "Téléphone :", false);
-                            System.out.println(phoneExtract);
 
                         }
                     }
