@@ -15,7 +15,6 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.*;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,7 +24,7 @@ import java.security.GeneralSecurityException;
 import java.time.*;
 import java.util.*;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class CalendarExploreApplication {
 
     private static final String APPLICATION_NAME = "Noron Calendar API";
@@ -37,14 +36,14 @@ public class CalendarExploreApplication {
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
-    private static final String CREDENTIALS_FILE_PATH = "/²²²²²²²²²aaaaacredentials.json";
+    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     /**
      * Creates an authorized Credential object.
      *
      * @param HTTP_TRANSPORT The network HTTP Transport.
      * @return An authorized Credential object.
-     * @throws IOException If the gmail-credentials.json file cannot be found.
+     * @throws IOException If the credentials.json file cannot be found.
      */
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         //Load client secrects
@@ -70,7 +69,10 @@ public class CalendarExploreApplication {
         SpringApplication.run(CalendarExploreApplication.class, args);
         System.out.println("API Runing....");
 
+
+
         String beginAt = getDateWithTimeZone(2020,10,20,0,0,"Australia/North");
+        System.out.println(beginAt);
         String finishAt = getDateWithTimeZone(2020,10,20,1,0, "Australia/North");
 
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
