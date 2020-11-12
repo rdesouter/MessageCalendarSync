@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EventMap {
+public class MessageMap {
     @JsonProperty("messageMap")
     Map<String, String> messageMap = new HashMap<>();
 
