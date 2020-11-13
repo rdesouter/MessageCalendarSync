@@ -13,7 +13,10 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import com.rdesouter.message.CredentialsProvider;
+import com.rdesouter.utils.MessageUtils;
 import com.rdesouter.utils.StringHandling;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -27,19 +30,28 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static javax.mail.Message.RecipientType.TO;
 
 @Service
-public class MessageService implements MessageConstant {
+public class MessageService extends MessageUtils implements MessageConstant {
+
+    private static Logger logger = LoggerFactory.getLogger(MessageService.class);
 
     private static final String APPLICATION_NAME = "Message_Calendar_Sync API";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     private static Gmail getGmailService() throws GeneralSecurityException, IOException {
-
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Gmail gmailService =
                 new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, CredentialsProvider.getCredentials(HTTP_TRANSPORT))
@@ -78,6 +90,22 @@ public class MessageService implements MessageConstant {
         }
     }
 
+
+    public void lastMessageTimeStamp() throws IOException, ParseException {
+        String logPath = System.getProperty("user.dir") + getConfigValue("logPath");
+
+        Stream<String> stream = Files.lines(Paths.get(logPath));
+        String lastTimeStamp = stream
+                .reduce((first,second)-> second)
+                .map(line ->StringHandling.extract(line, "INFO", true))
+                .orElse(null);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
+        Date date = dateFormat.parse(lastTimeStamp);
+        Timestamp timestamp = new Timestamp(date.getTime());
+        Long timeStampInSecond = timestamp.getTime()/1000;
+    }
+
     private String getSubjectMessage(MessagePart messagePart, String subject) {
         List<MessagePartHeader> headers = messagePart.getHeaders();
         for (MessagePartHeader header : headers) {
@@ -107,6 +135,8 @@ public class MessageService implements MessageConstant {
 
             String[] contentSplitted = StringHandling.splitNewLine(messageBody);
             extractValueFromMessageBody(contentSplitted, messageMap, mapForCreateEvent);
+
+            logger.info("value extracted from message body:" + mapForCreateEvent);
         }
     }
 

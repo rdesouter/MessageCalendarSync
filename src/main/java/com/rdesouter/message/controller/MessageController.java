@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.text.ParseException;
 
 @Configuration
 @EnableScheduling
@@ -20,7 +21,6 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
-
     /**
      *       ┌───────────── second (0-59)
      *       │ ┌───────────── minute (0 - 59)
@@ -37,10 +37,16 @@ public class MessageController {
      * bewteen monday to sunday
      *
      * */
-    @Scheduled(cron = "* 0/30 9-17 * * 0-7")
+//    @Scheduled(cron = "* 0/30 9-17 * * 0-7")
+//    @Scheduled(cron = "0/10 0/1 9-17 * * 0-7")
     @GetMapping()
     public void getMessages() throws IOException, GeneralSecurityException {
         messageService.getMessages();
+    }
+
+    @GetMapping(value = "/logs")
+    public void getLog() throws IOException, ParseException {
+        messageService.lastMessageTimeStamp();
     }
 
 }
