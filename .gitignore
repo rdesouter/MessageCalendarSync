@@ -34,3 +34,6 @@ build/
 
 **/credentials.json
 /tokens
+
+### LOG FILE ###
+/logs

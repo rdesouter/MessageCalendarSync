@@ -29,11 +29,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import static javax.mail.Message.RecipientType.TO;
 
 @Service
 public class MessageService implements MessageConstant {
+
+    private static Logger logger = LoggerFactory.getLogger(MessageService.class);
 
     private static final String APPLICATION_NAME = "Message_Calendar_Sync API";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -107,6 +112,8 @@ public class MessageService implements MessageConstant {
 
             String[] contentSplitted = StringHandling.splitNewLine(messageBody);
             extractValueFromMessageBody(contentSplitted, messageMap, mapForCreateEvent);
+
+            logger.info("value extracted from message body:" + mapForCreateEvent);
         }
     }
 

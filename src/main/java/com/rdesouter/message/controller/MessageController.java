@@ -37,7 +37,8 @@ public class MessageController {
      * bewteen monday to sunday
      *
      * */
-    @Scheduled(cron = "* 0/30 9-17 * * 0-7")
+//    @Scheduled(cron = "* 0/30 9-17 * * 0-7")
+    @Scheduled(cron = "0/10 0/1 9-17 * * 0-7")
     @GetMapping()
     public void getMessages() throws IOException, GeneralSecurityException {
         messageService.getMessages();
