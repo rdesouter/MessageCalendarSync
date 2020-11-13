@@ -46,7 +46,7 @@ public class MessageController {
 
     @GetMapping(value = "/logs")
     public void getLog() throws IOException, ParseException {
-        messageService.checkLog();
+        messageService.lastMessageTimeStamp();
     }
 
 }
