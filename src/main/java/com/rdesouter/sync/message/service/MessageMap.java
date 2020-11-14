@@ -1,4 +1,4 @@
-package com.rdesouter.message.service;
+package com.rdesouter.sync.message.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

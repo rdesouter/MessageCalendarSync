@@ -1,4 +1,4 @@
-package com.rdesouter.calendar.model;
+package com.rdesouter.sync.calendar.model;
 
 public class DateWithTimeZone {
 

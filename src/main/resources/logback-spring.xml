@@ -45,8 +45,8 @@
         </rollingPolicy>
     </appender>
 
-    <!-- LOG only package "com.rdesouter.message.service*" at INFO level -->
-    <logger name="com.rdesouter.message.service" level="info" additivity="true">
+    <!-- LOG only package "com.rdesouter.sync.message.service*" at INFO level -->
+    <logger name="com.rdesouter.sync.message.service" level="info" additivity="true">
         <appender-ref ref="MessageCalFile" />
         <appender-ref ref="Console" />
     </logger>

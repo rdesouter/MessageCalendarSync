@@ -1,22 +1,23 @@
-package com.rdesouter.message.service;
+package com.rdesouter.sync.message.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
-import com.rdesouter.message.CredentialsProvider;
+import com.rdesouter.sync.SyncAbstract;
+import com.rdesouter.sync.CredentialsProvider;
+import com.rdesouter.sync.calendar.service.CalendarService;
 import com.rdesouter.utils.MessageUtils;
 import com.rdesouter.utils.StringHandling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -37,19 +38,18 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Stream;
 
 import static javax.mail.Message.RecipientType.TO;
 
 @Service
-public class MessageService extends MessageUtils implements MessageConstant {
+public class MessageService extends SyncAbstract implements MessageConstant {
 
-    private static Logger logger = LoggerFactory.getLogger(MessageService.class);
+    @Autowired
+    private CalendarService calendarService;
 
-    private static final String APPLICATION_NAME = "Message_Calendar_Sync API";
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
 
     private static Gmail getGmailService() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -68,6 +68,7 @@ public class MessageService extends MessageUtils implements MessageConstant {
      * label:yourmail@domain.be
      * */
     public void getMessages() throws IOException, GeneralSecurityException {
+
         Gmail gmailService = getGmailService();
         ListMessagesResponse messageList = gmailService.users().messages().list("me").setQ("label:dev@papymousse.be").setMaxResults(1L).execute();
         if (messageList.isEmpty()) {
@@ -90,22 +91,6 @@ public class MessageService extends MessageUtils implements MessageConstant {
         }
     }
 
-
-    public void lastMessageTimeStamp() throws IOException, ParseException {
-        String logPath = System.getProperty("user.dir") + getConfigValue("logPath");
-
-        Stream<String> stream = Files.lines(Paths.get(logPath));
-        String lastTimeStamp = stream
-                .reduce((first,second)-> second)
-                .map(line ->StringHandling.extract(line, "INFO", true))
-                .orElse(null);
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
-        Date date = dateFormat.parse(lastTimeStamp);
-        Timestamp timestamp = new Timestamp(date.getTime());
-        Long timeStampInSecond = timestamp.getTime()/1000;
-    }
-
     private String getSubjectMessage(MessagePart messagePart, String subject) {
         List<MessagePartHeader> headers = messagePart.getHeaders();
         for (MessagePartHeader header : headers) {
@@ -117,9 +102,9 @@ public class MessageService extends MessageUtils implements MessageConstant {
         return subject;
     }
 
-    private void getMapForCreateEvent(MessageMap messageMap, Message message) {
+    private void getMapForCreateEvent(MessageMap messageMap, Message message) throws IOException, GeneralSecurityException {
         StringBuilder sb = new StringBuilder();
-        HashMap<String, String> mapForCreateEvent = new HashMap<>();
+
 
         if (message.getPayload().getParts() == null) {
             String messageBody = new String(Base64.decodeBase64(message.getPayload().getBody().getData()), StandardCharsets.UTF_8);
@@ -134,9 +119,16 @@ public class MessageService extends MessageUtils implements MessageConstant {
             System.out.println("utf8 decoded bodyparts: \n" + messageBody);
 
             String[] contentSplitted = StringHandling.splitNewLine(messageBody);
-            extractValueFromMessageBody(contentSplitted, messageMap, mapForCreateEvent);
+            extractValueFromMessageBody(contentSplitted, messageMap, messageMapForEvent);
 
-            logger.info("value extracted from message body:" + mapForCreateEvent);
+            if(messageMapForEvent.isEmpty()){
+                LOGGER.warn("message contains no element for create event \n" + sb);
+            }else {
+                LOGGER.info("value extracted from message body:" + messageMapForEvent);
+            }
+
+//            calendarService.createEvent(BEGIN_AT, FINISH_AT);
+
         }
     }
 
@@ -148,14 +140,14 @@ public class MessageService extends MessageUtils implements MessageConstant {
         return messageMapped;
     }
 
-    private HashMap<String, String> extractValueFromMessageBody(String[] contentSplitted, MessageMap messageMap, HashMap<String, String> mapForCreateEvent) {
+    private void extractValueFromMessageBody(String[] contentSplitted, MessageMap messageMap, HashMap<String, String> messageMapForEvent) {
+        //TODO need to check if messageMapForEvent is not empty
         for (Map.Entry<String, String> e : messageMap.messageMap.entrySet()) {
             Arrays.stream(contentSplitted)
                     .filter(x -> x.contains(e.getValue()))
                     .findFirst()
-                    .ifPresent(x -> mapForCreateEvent.put(e.getKey(), StringHandling.extract(x, e.getValue(), false)));
+                    .ifPresent(x -> messageMapForEvent.put(e.getKey(), StringHandling.extract(x, e.getValue(), false)));
         }
-        return mapForCreateEvent;
     }
 
     private void getPlainTextFromMessageParts(List<MessagePart> messageParts, StringBuilder sb) {
@@ -187,6 +179,27 @@ public class MessageService extends MessageUtils implements MessageConstant {
                 }
             }
         }
+    }
+
+
+    public void lastMessageTimeStamp() throws IOException, ParseException {
+        String logPath = System.getProperty("user.dir") + MessageUtils.getConfigValue("logPath");
+
+        Stream<String> stream = Files.lines(Paths.get(logPath));
+        // get last element of stream is not natural
+        // can be done with skip also
+        // long count = stream.count()
+        // stream.skip(count - 1).findFirst().get();
+        String lastTimeStamp = stream
+                .reduce((first,second)-> second)
+                .map(line ->StringHandling.extract(line, "INFO", true))
+                .orElse(null);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
+        Date date = dateFormat.parse(lastTimeStamp);
+        Timestamp timestamp = new Timestamp(date.getTime());
+        //google filter only allow epoch timestamp in second
+        Long timeStampInSecond = timestamp.getTime()/1000;
     }
 
 

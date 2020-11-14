@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 public class MessageUtils {
 
     @Autowired
-    private Environment env;
+    private static Environment env;
 
-    public String getConfigValue(String configKey){
+    public static String getConfigValue(String configKey){
         return env.getProperty(configKey);
     }
 

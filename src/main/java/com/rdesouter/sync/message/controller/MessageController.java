@@ -1,10 +1,9 @@
-package com.rdesouter.message.controller;
+package com.rdesouter.sync.message.controller;
 
-import com.rdesouter.message.service.MessageService;
+import com.rdesouter.sync.message.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
