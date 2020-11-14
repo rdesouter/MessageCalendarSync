@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class MessageMap {
     @JsonProperty("messageMap")
-    Map<String, String> messageMap = new HashMap<>();
+    public Map<String, String> messageMap = new HashMap<>();
 
-    String get(String key) {
+    public String get(String key) {
         return this.messageMap.get(key);
     }
 }

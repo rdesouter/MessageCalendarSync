@@ -1,4 +1,4 @@
-package com.rdesouter.message;
+package com.rdesouter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -20,9 +20,16 @@ import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
+import com.rdesouter.config.AppConfiguration;
+import com.rdesouter.message.MessageConstant;
+import com.rdesouter.message.MessageMap;
 import com.rdesouter.utils.StringHandling;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -40,7 +47,7 @@ import java.util.*;
 import static javax.mail.Message.RecipientType.TO;
 
 @SpringBootApplication
-public class GmailExploreApplication implements MessageConstant{
+public class GmailExploreApplication implements MessageConstant {
 
     private static final String APPLICATION_NAME = "Noron Gmail API";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -49,6 +56,7 @@ public class GmailExploreApplication implements MessageConstant{
 
     private static final List<String> SCOPES = Arrays.asList(GmailScopes.GMAIL_READONLY, GmailScopes.GMAIL_SEND, CalendarScopes.CALENDAR, CalendarScopes.CALENDAR_EVENTS_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         InputStream in = GmailExploreApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
@@ -67,7 +75,7 @@ public class GmailExploreApplication implements MessageConstant{
         return new AuthorizationCodeInstalledApp(flow, serverReceiver).authorize(USER_ID);
     }
 
-    public static void main(String[] args) throws GeneralSecurityException, IOException, MessagingException {
+    public static void main(String[] args) throws GeneralSecurityException, IOException, MessagingException, InterruptedException {
         SpringApplication.run(GmailExploreApplication.class, args);
         System.out.println("Google's API Running...");
 
@@ -76,10 +84,21 @@ public class GmailExploreApplication implements MessageConstant{
                 new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                             .setApplicationName(APPLICATION_NAME)
                             .build();
-        getMessages(gmailService);
+
+
+//        getMessages(gmailService);
 //        sendGmail(gmailService);
 
     }
+
+    @Bean
+    public Gmail gmail() throws GeneralSecurityException, IOException {
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        return   new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+    }
+
 
     private static void getMessages(Gmail gmailService) throws IOException {
         /*
@@ -89,8 +108,9 @@ public class GmailExploreApplication implements MessageConstant{
         * category:primary after:2020/10/18 before:2020/11/2
         * label:yourmail@domain.be
          * */
-        ListMessagesResponse messageList = gmailService.users().messages().list("me").setQ("label:dev@papymousse.be after:2020/11/04").setMaxResults(2L).execute();
+        ListMessagesResponse messageList = gmailService.users().messages().list("me").setQ("category: primary").setMaxResults(1L).execute();
         List<Message> messages = messageList.getMessages();
+        System.out.println(messageList.size());
 
         if (messageList.isEmpty()) {
             System.out.println("No message found");
@@ -122,6 +142,19 @@ public class GmailExploreApplication implements MessageConstant{
             }
         }
         return subject;
+    }
+
+    @Bean
+    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration){
+        Properties props = new Properties();
+        props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
+
+        HikariConfig config = new HikariConfig(props);
+        config.addDataSourceProperty("user", appConfiguration.getDatabaseUser());
+        config.addDataSourceProperty("password", appConfiguration.getDatabasePassword());
+        config.addDataSourceProperty("databaseName", appConfiguration.getDatabaseName());
+        config.addDataSourceProperty("portNumber", appConfiguration.getDatabasePortNumber());
+        return new HikariDataSource(config);
     }
 
     private static void getMapForCreateEvent(MessageMap messageMap, Message message) {
