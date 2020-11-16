@@ -3,6 +3,7 @@ package com.rdesouter.service;
 import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
+import com.rdesouter.GmailExploreApplication;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;

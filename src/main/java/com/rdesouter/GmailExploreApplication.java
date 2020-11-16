@@ -46,7 +46,7 @@ import java.util.*;
 
 import static javax.mail.Message.RecipientType.TO;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class GmailExploreApplication implements MessageConstant {
 
     private static final String APPLICATION_NAME = "Noron Gmail API";
@@ -84,19 +84,9 @@ public class GmailExploreApplication implements MessageConstant {
                 new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                             .setApplicationName(APPLICATION_NAME)
                             .build();
-
-
-//        getMessages(gmailService);
+        getMessages(gmailService);
 //        sendGmail(gmailService);
 
-    }
-
-    @Bean
-    public Gmail gmail() throws GeneralSecurityException, IOException {
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        return   new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
     }
 
 
@@ -110,7 +100,7 @@ public class GmailExploreApplication implements MessageConstant {
          * */
         ListMessagesResponse messageList = gmailService.users().messages().list("me").setQ("category: primary").setMaxResults(1L).execute();
         List<Message> messages = messageList.getMessages();
-        System.out.println(messageList.size());
+        System.out.println("messageList size: " + messageList.size());
 
         if (messageList.isEmpty()) {
             System.out.println("No message found");
@@ -144,18 +134,6 @@ public class GmailExploreApplication implements MessageConstant {
         return subject;
     }
 
-    @Bean
-    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration){
-        Properties props = new Properties();
-        props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
-
-        HikariConfig config = new HikariConfig(props);
-        config.addDataSourceProperty("user", appConfiguration.getDatabaseUser());
-        config.addDataSourceProperty("password", appConfiguration.getDatabasePassword());
-        config.addDataSourceProperty("databaseName", appConfiguration.getDatabaseName());
-        config.addDataSourceProperty("portNumber", appConfiguration.getDatabasePortNumber());
-        return new HikariDataSource(config);
-    }
 
     private static void getMapForCreateEvent(MessageMap messageMap, Message message) {
 
@@ -184,6 +162,7 @@ public class GmailExploreApplication implements MessageConstant {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         mapper.findAndRegisterModules();
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        File file = new File(System.getProperty("user.dir") + "src/main/resources/messageConf.yml");
         MessageMap messageMapped = mapper.readValue(new File(cl.getResource("messageConf.yml").getFile()), MessageMap.class);
         return messageMapped;
     }

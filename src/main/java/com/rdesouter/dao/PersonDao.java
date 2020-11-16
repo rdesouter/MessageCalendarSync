@@ -13,6 +13,7 @@ public class PersonDao {
 
     private final HikariDataSource hikariDataSource;
 
+
     public PersonDao(HikariDataSource hikariDataSource) {
         this.hikariDataSource = hikariDataSource;
     }
@@ -21,7 +22,7 @@ public class PersonDao {
         try(
                 Connection connection = hikariDataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("" +
-                        "INSERT INTO public.person (name, email, refreshToken) VALUES(?,?,?)")
+                        "INSERT INTO public.person (name, email, refresh_token) VALUES(?,?,?)")
                 ){
             preparedStatement.setString(1, person.name);
             preparedStatement.setString(2, person.email);
