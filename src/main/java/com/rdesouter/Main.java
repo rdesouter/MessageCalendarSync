@@ -17,7 +17,6 @@ import com.google.api.services.gmail.GmailScopes;
 import com.rdesouter.config.AppConfiguration;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.mortbay.util.ajax.JSON;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +40,7 @@ public class Main {
     private final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     public static void main(String[] args) {
-        SpringApplication.run(GmailExploreApplication.class, args);
+        SpringApplication.run(Main.class, args);
     }
 
     @Bean

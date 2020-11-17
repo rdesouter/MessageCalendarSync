@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties
 public class AppConfiguration {
 
-    public String password;
-    public String userEmail;
     public String databasePassword;
     public String databaseUser;
     public String databasePortNumber;
@@ -47,19 +45,4 @@ public class AppConfiguration {
         this.databaseName = databaseName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
 }
