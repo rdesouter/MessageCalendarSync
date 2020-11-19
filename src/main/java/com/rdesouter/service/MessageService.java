@@ -8,9 +8,12 @@ import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
+import com.rdesouter.SyncAbstract;
 import com.rdesouter.message.MessageMap;
+import com.rdesouter.utils.MessageUtils;
 import com.rdesouter.utils.StringHandling;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -19,29 +22,41 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.GeneralSecurityException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static com.rdesouter.message.MessageConstant.*;
 import static javax.mail.Message.RecipientType.TO;
 
-@Component
-public class MessageService {
+@Service
+public class MessageService extends SyncAbstract {
 
-
-    private final Gmail gmail;
-
-    public MessageService(Gmail gmail) {
-        this.gmail = gmail;
-    }
+    @Autowired
+    private Gmail gmail;
 
     public void sendMail(String message) throws MessagingException, IOException {
         MimeMessage m = createMessageWithMultiPart(SENDER, RECEIVER, SUBJECT, message);
         sendMessage(gmail, "me", m);
+    }
+
+    private Message sendMessage(Gmail service, String userId, MimeMessage emailContent) throws MessagingException, IOException {
+        Message message = createMessageWithEmail(emailContent);
+        message = service.users().messages().send(userId, message).execute();
+
+        System.out.println("Message id: " + message.getId());
+        System.out.println(message.toPrettyString());
+        return message;
     }
 
     private MimeMessage createMessageWithMultiPart(String to, String from, String sub, String bodyText) throws MessagingException {
@@ -66,15 +81,6 @@ public class MessageService {
         return message;
     }
 
-    private Message sendMessage(Gmail service, String userId, MimeMessage emailContent) throws MessagingException, IOException {
-        Message message = createMessageWithEmail(emailContent);
-        message = service.users().messages().send(userId, message).execute();
-
-        System.out.println("Message id: " + message.getId());
-        System.out.println(message.toPrettyString());
-        return message;
-    }
-
     private Message createMessageWithEmail(MimeMessage emailContent) throws MessagingException, IOException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         emailContent.writeTo(buffer);
@@ -83,6 +89,40 @@ public class MessageService {
         Message message = new Message();
         message.setRaw(encodedEmail);
         return message;
+    }
+
+
+    /**
+     * setQ("labe:yourLabelInGmail")
+     * params can be the same in search
+     * for searching in main inbox between two date
+     * category:primary after:2020/10/18 before:2020/11/2
+     * label:yourmail@domain.be
+     * */
+    public void getMessages() throws IOException, GeneralSecurityException {
+
+        ListMessagesResponse messageList = gmail.users().messages().list("me").setQ("category: primary").setMaxResults(1L).execute();
+        List<Message> messages = messageList.getMessages();
+//        System.out.println("messageList size: " + messageList.size());
+
+        if (messageList.isEmpty()) {
+            System.out.println("No message found");
+        } else {
+            System.out.println("Message found:");
+            MessageMap messageMap = getMessageMap();
+
+            for (Message message: messages) {
+                message = gmail.users().messages().get("me", message.getId()).setFormat("FULL").execute();
+                MessagePart messagePart = message.getPayload();
+
+                String subject = "";
+                if (messagePart != null) {
+                    subject = getSubjectMessage(messagePart, subject);
+                    getMapForCreateEvent(messageMap, message);
+
+                }
+            }
+        }
     }
 
     private void getHtmlTextFromMessageParts(List<MessagePart> messageParts, StringBuilder sb) {
@@ -169,35 +209,25 @@ public class MessageService {
         return subject;
     }
 
-    public void getMessages(Gmail gmailService) throws IOException {
-        /*
-         * setQ("labe:yourLabelInGmail")
-         * params can be the same in search
-         * for searching in main inbox between two date
-         * category:primary after:2020/10/18 before:2020/11/2
-         * label:yourmail@domain.be
-         * */
-        ListMessagesResponse messageList = gmailService.users().messages().list("me").setQ("category: primary").setMaxResults(1L).execute();
-        List<Message> messages = messageList.getMessages();
-        System.out.println("messageList size: " + messageList.size());
+    public void lastMessageTimeStamp() throws IOException, ParseException {
+        String logPath = System.getProperty("user.dir") + MessageUtils.getConfigValue("logPath");
 
-        if (messageList.isEmpty()) {
-            System.out.println("No message found");
-        } else {
-            System.out.println("Message found:");
-            MessageMap messageMap = getMessageMap();
+        Stream<String> stream = Files.lines(Paths.get(logPath));
+        // get last element of stream is not natural
+        // can be done with skip also
+        // long count = stream.count()
+        // stream.skip(count - 1).findFirst().get();
+        String lastTimeStamp = stream
+                .reduce((first,second)-> second)
+                .map(line ->StringHandling.extract(line, "INFO", true))
+                .orElse(null);
 
-            for (Message message: messages) {
-                message = gmailService.users().messages().get("me", message.getId()).setFormat("FULL").execute();
-                MessagePart messagePart = message.getPayload();
-
-                String subject = "";
-                if (messagePart != null) {
-                    subject = getSubjectMessage(messagePart, subject);
-                    getMapForCreateEvent(messageMap, message);
-
-                }
-            }
-        }
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
+        Date date = dateFormat.parse(lastTimeStamp);
+        Timestamp timestamp = new Timestamp(date.getTime());
+        //google filter only allow epoch timestamp in second
+        Long timeStampInSecond = timestamp.getTime()/1000;
     }
+
+
 }

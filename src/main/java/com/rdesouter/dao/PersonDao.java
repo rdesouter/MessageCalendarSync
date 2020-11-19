@@ -11,8 +11,10 @@ import java.sql.SQLException;
 @Component
 public class PersonDao {
 
-    private final HikariDataSource hikariDataSource;
+    private HikariDataSource hikariDataSource;
 
+    public PersonDao() {
+    }
 
     public PersonDao(HikariDataSource hikariDataSource) {
         this.hikariDataSource = hikariDataSource;

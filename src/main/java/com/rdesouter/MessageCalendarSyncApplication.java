@@ -28,33 +28,34 @@ import java.util.List;
 import java.util.Properties;
 
 @SpringBootApplication
-public class Main {
+public class MessageCalendarSyncApplication {
 
-
-    private final String APPLICATION_NAME = "Noron Gmail API";
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private final String TOKENS_DIRECTORY_PATH = "tokens/gmail";
     private final String USER_ID = "user-test";
-
-    private final List<String> SCOPES = Arrays.asList(GmailScopes.GMAIL_READONLY, GmailScopes.GMAIL_SEND, CalendarScopes.CALENDAR, CalendarScopes.CALENDAR_EVENTS_READONLY);
+    private final List<String> SCOPES = Arrays.asList(
+            GmailScopes.GMAIL_READONLY,
+            GmailScopes.GMAIL_SEND,
+            CalendarScopes.CALENDAR,
+            CalendarScopes.CALENDAR_EVENTS_READONLY);
     private final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(MessageCalendarSyncApplication.class, args);
     }
 
-    @Bean
-    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration){
-        Properties props = new Properties();
-        props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
-
-        HikariConfig config = new HikariConfig(props);
-        config.addDataSourceProperty("user", appConfiguration.getDatabaseUser());
-        config.addDataSourceProperty("password", appConfiguration.getDatabasePassword());
-        config.addDataSourceProperty("databaseName", appConfiguration.getDatabaseName());
-        config.addDataSourceProperty("portNumber", appConfiguration.getDatabasePortNumber());
-        return new HikariDataSource(config);
-    }
+//    @Bean
+//    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration){
+//        Properties props = new Properties();
+//        props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
+//
+//        HikariConfig config = new HikariConfig(props);
+//        config.addDataSourceProperty("user", appConfiguration.getDatabaseUser());
+//        config.addDataSourceProperty("password", appConfiguration.getDatabasePassword());
+//        config.addDataSourceProperty("databaseName", appConfiguration.getDatabaseName());
+//        config.addDataSourceProperty("portNumber", appConfiguration.getDatabasePortNumber());
+//        return new HikariDataSource(config);
+//    }
 
     @Bean
     public Gmail gmail() throws GeneralSecurityException, IOException {
