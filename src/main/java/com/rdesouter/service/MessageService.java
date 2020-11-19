@@ -44,10 +44,13 @@ import static javax.mail.Message.RecipientType.TO;
 @Service
 public class MessageService extends SyncAbstract implements MessageConstant {
 
-//    @Autowired
-//    private CalendarService calendarService;
+    @Autowired
+    private CalendarService calendarService;
     @Autowired
     private Gmail gmail;
+    @Autowired
+    private MessageUtils messageUtils;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
 
     public Message sendMail(String messageBody) throws MessagingException, IOException {
@@ -218,9 +221,9 @@ public class MessageService extends SyncAbstract implements MessageConstant {
     }
 
     public void lastMessageTimeStamp() throws IOException, ParseException {
-        System.getProperty("user.dir");
-        String logPath = System.getProperty("user.dir") + MessageUtils.getConfigValue("log.path");
+        String logPath = System.getProperty("user.dir") + messageUtils.getConfigValue("log.path");
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
         Stream<String> stream = Files.lines(Paths.get(logPath));
         // get last element of stream is not natural
         // can be done with skip also
@@ -231,11 +234,16 @@ public class MessageService extends SyncAbstract implements MessageConstant {
                 .map(line ->StringHandling.extract(line, "INFO", true))
                 .orElse(null);
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
-        Date date = dateFormat.parse(lastTimeStamp);
-        Timestamp timestamp = new Timestamp(date.getTime());
-        //google filter only allow epoch timestamp in second
-        Long timeStampInSecond = timestamp.getTime()/1000;
+        //TODO only if null but need to check if after INFO
+        // not equal to "no message was logged"
+        if (lastTimeStamp != null){
+            Date date = dateFormat.parse(lastTimeStamp);
+            Timestamp timestamp = new Timestamp(date.getTime());
+            //google filter only allow epoch timestamp in second
+            Long timeStampInSecond = timestamp.getTime()/1000;
+        } else {
+            LOGGER.info("None messages was logged for now");
+        }
     }
 
 

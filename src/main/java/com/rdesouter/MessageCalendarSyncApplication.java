@@ -26,7 +26,6 @@ import java.io.*;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 @SpringBootApplication
 public class MessageCalendarSyncApplication extends SyncAbstract {
