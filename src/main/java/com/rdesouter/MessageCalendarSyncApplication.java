@@ -73,7 +73,7 @@ public class MessageCalendarSyncApplication extends SyncAbstract {
 
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         String CREDENTIALS_FILE_PATH = "/credentials.json";
-        InputStream in = GmailExploreApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = MessageCalendarSyncApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Credentials file not found: " + CREDENTIALS_FILE_PATH);
         }

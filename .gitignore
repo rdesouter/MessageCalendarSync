@@ -35,3 +35,6 @@ build/
 **/credentials.json
 **/gmail-credentials.json
 /tokens
+
+### LOG ###
+/logs

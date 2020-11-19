@@ -24,7 +24,7 @@ import java.security.GeneralSecurityException;
 import java.time.*;
 import java.util.*;
 
-//@SpringBootApplication
+
 public class CalendarExploreApplication {
 
     private static final String APPLICATION_NAME = "Noron Calendar API";
@@ -64,12 +64,7 @@ public class CalendarExploreApplication {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public static void main(String[] args) throws GeneralSecurityException, IOException {
-
-        SpringApplication.run(CalendarExploreApplication.class, args);
-        System.out.println("API Runing....");
-
-
+    public static void test() throws GeneralSecurityException, IOException {
 
         String beginAt = getDateWithTimeZone(2020,10,20,0,0,"Australia/North");
         System.out.println(beginAt);
@@ -194,7 +189,6 @@ public class CalendarExploreApplication {
                 .setOverrides(Arrays.asList(reminderOverrides));
         insertEvent.setReminders(reminders);
 
-//        String calendarId = "primary";
         insertEvent = service.events().insert("primary", insertEvent).execute();
         System.out.printf("Event created: %s\n", insertEvent.getHtmlLink());
     }

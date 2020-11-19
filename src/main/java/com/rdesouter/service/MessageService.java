@@ -9,9 +9,12 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import com.rdesouter.SyncAbstract;
+import com.rdesouter.message.MessageConstant;
 import com.rdesouter.message.MessageMap;
 import com.rdesouter.utils.MessageUtils;
 import com.rdesouter.utils.StringHandling;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,23 +39,21 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static com.rdesouter.message.MessageConstant.*;
 import static javax.mail.Message.RecipientType.TO;
 
 @Service
-public class MessageService extends SyncAbstract {
+public class MessageService extends SyncAbstract implements MessageConstant {
 
+//    @Autowired
+//    private CalendarService calendarService;
     @Autowired
     private Gmail gmail;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
 
-    public void sendMail(String message) throws MessagingException, IOException {
-        MimeMessage m = createMessageWithMultiPart(SENDER, RECEIVER, SUBJECT, message);
-        sendMessage(gmail, "me", m);
-    }
-
-    private Message sendMessage(Gmail service, String userId, MimeMessage emailContent) throws MessagingException, IOException {
-        Message message = createMessageWithEmail(emailContent);
-        message = service.users().messages().send(userId, message).execute();
+    public Message sendMail(String messageBody) throws MessagingException, IOException {
+        MimeMessage messageContent = createMessageWithMultiPart(SENDER, RECEIVER, SUBJECT, messageBody);
+        Message message = createMessage(messageContent);
+        message = gmail.users().messages().send("me", message).execute();
 
         System.out.println("Message id: " + message.getId());
         System.out.println(message.toPrettyString());
@@ -81,7 +82,7 @@ public class MessageService extends SyncAbstract {
         return message;
     }
 
-    private Message createMessageWithEmail(MimeMessage emailContent) throws MessagingException, IOException {
+    private Message createMessage(MimeMessage emailContent) throws MessagingException, IOException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         emailContent.writeTo(buffer);
         byte[] bytes = buffer.toByteArray();
@@ -194,11 +195,11 @@ public class MessageService extends SyncAbstract {
             String[] contentSplitted = StringHandling.splitNewLine(messageBody);
             extractValueFromMessageBody(contentSplitted, messageMap,mapForCreateEvent);
 
-//            if(messageMapForEvent.isEmpty()){
-//                LOGGER.warn("message contains no element for create event \n" + sb);
-//            }else {
-//                LOGGER.info("value extracted from message body:" + messageMapForEvent);
-//            }
+            if(messageMapForEvent.isEmpty()){
+                LOGGER.warn("message contains no element for create event \n" + sb);
+            }else {
+                LOGGER.info("value extracted from message body:" + messageMapForEvent);
+            }
 
 //            calendarService.createEvent(BEGIN_AT, FINISH_AT);
         }
@@ -217,7 +218,8 @@ public class MessageService extends SyncAbstract {
     }
 
     public void lastMessageTimeStamp() throws IOException, ParseException {
-        String logPath = System.getProperty("user.dir") + messageUtils.getConfigValue("logPath");
+        System.getProperty("user.dir");
+        String logPath = System.getProperty("user.dir") + MessageUtils.getConfigValue("log.path");
 
         Stream<String> stream = Files.lines(Paths.get(logPath));
         // get last element of stream is not natural

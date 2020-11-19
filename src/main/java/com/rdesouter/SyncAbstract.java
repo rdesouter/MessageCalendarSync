@@ -16,5 +16,4 @@ public class SyncAbstract {
     protected static String FINISH_AT = DateHandling.getDateWithTimeZone(2020,10,20,1,0, "Australia/North");
 
     protected static HashMap<String, String> messageMapForEvent = new HashMap<>();
-    protected static MessageUtils messageUtils = new MessageUtils();
 }
