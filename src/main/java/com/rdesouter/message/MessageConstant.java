@@ -9,4 +9,5 @@ public interface MessageConstant {
     String SUBJECT = "Message sent with gmail API";
     String BODY_TITLE = "Congratutaltions";
     String BODY_TEXT = "this is a test message sending with Gmail API sending at: " + LocalDateTime.now();
+
 }
