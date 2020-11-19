@@ -15,6 +15,7 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.rdesouter.config.AppConfiguration;
+import com.rdesouter.utils.MessageUtils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.SpringApplication;
@@ -28,17 +29,14 @@ import java.util.List;
 import java.util.Properties;
 
 @SpringBootApplication
-public class MessageCalendarSyncApplication {
+public class MessageCalendarSyncApplication extends SyncAbstract {
 
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private final String TOKENS_DIRECTORY_PATH = "tokens/gmail";
-    private final String USER_ID = "user-test";
     private final List<String> SCOPES = Arrays.asList(
             GmailScopes.GMAIL_READONLY,
             GmailScopes.GMAIL_SEND,
             CalendarScopes.CALENDAR,
             CalendarScopes.CALENDAR_EVENTS_READONLY);
-    private final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     public static void main(String[] args) {
         SpringApplication.run(MessageCalendarSyncApplication.class, args);
@@ -61,7 +59,7 @@ public class MessageCalendarSyncApplication {
     public Gmail gmail() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         return   new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                .setApplicationName("Noron Web API")
+                .setApplicationName(APPLICATION_NAME)
                 .build();
     }
 
@@ -69,11 +67,12 @@ public class MessageCalendarSyncApplication {
     public Calendar calendar() throws GeneralSecurityException, IOException {
         final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         return new Calendar.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
-                .setApplicationName("Noron Web API")
+                .setApplicationName(APPLICATION_NAME)
                 .build();
     }
 
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+        String CREDENTIALS_FILE_PATH = "/credentials.json";
         InputStream in = GmailExploreApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Credentials file not found: " + CREDENTIALS_FILE_PATH);
@@ -82,11 +81,10 @@ public class MessageCalendarSyncApplication {
 
         GoogleAuthorizationCodeFlow flow =
                 new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, gSecrets, SCOPES)
-                        .setDataStoreFactory(new FileDataStoreFactory(new File(TOKENS_DIRECTORY_PATH)))
+                        .setDataStoreFactory(new FileDataStoreFactory(new File("tokens/gmail")))
                         .setAccessType("offline")
                         .build();
         LocalServerReceiver serverReceiver = new LocalServerReceiver.Builder().setPort(8888).build();
-
-        return new AuthorizationCodeInstalledApp(flow, serverReceiver).authorize(USER_ID);
+        return new AuthorizationCodeInstalledApp(flow, serverReceiver).authorize("user-test");
     }
 }

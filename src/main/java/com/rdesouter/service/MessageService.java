@@ -101,7 +101,7 @@ public class MessageService extends SyncAbstract {
      * */
     public void getMessages() throws IOException, GeneralSecurityException {
 
-        ListMessagesResponse messageList = gmail.users().messages().list("me").setQ("category: primary").setMaxResults(1L).execute();
+        ListMessagesResponse messageList = gmail.users().messages().list("me").setQ("label:dev@papymousse.be").setMaxResults(1L).execute();
         List<Message> messages = messageList.getMessages();
 //        System.out.println("messageList size: " + messageList.size());
 
@@ -194,6 +194,13 @@ public class MessageService extends SyncAbstract {
             String[] contentSplitted = StringHandling.splitNewLine(messageBody);
             extractValueFromMessageBody(contentSplitted, messageMap,mapForCreateEvent);
 
+//            if(messageMapForEvent.isEmpty()){
+//                LOGGER.warn("message contains no element for create event \n" + sb);
+//            }else {
+//                LOGGER.info("value extracted from message body:" + messageMapForEvent);
+//            }
+
+//            calendarService.createEvent(BEGIN_AT, FINISH_AT);
         }
     }
 
@@ -210,7 +217,7 @@ public class MessageService extends SyncAbstract {
     }
 
     public void lastMessageTimeStamp() throws IOException, ParseException {
-        String logPath = System.getProperty("user.dir") + MessageUtils.getConfigValue("logPath");
+        String logPath = System.getProperty("user.dir") + messageUtils.getConfigValue("logPath");
 
         Stream<String> stream = Files.lines(Paths.get(logPath));
         // get last element of stream is not natural
