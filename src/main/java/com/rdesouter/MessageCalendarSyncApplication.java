@@ -21,11 +21,13 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.*;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 @SpringBootApplication
 public class MessageCalendarSyncApplication extends SyncAbstract {
@@ -41,18 +43,18 @@ public class MessageCalendarSyncApplication extends SyncAbstract {
         SpringApplication.run(MessageCalendarSyncApplication.class, args);
     }
 
-//    @Bean
-//    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration){
-//        Properties props = new Properties();
-//        props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
-//
-//        HikariConfig config = new HikariConfig(props);
-//        config.addDataSourceProperty("user", appConfiguration.getDatabaseUser());
-//        config.addDataSourceProperty("password", appConfiguration.getDatabasePassword());
-//        config.addDataSourceProperty("databaseName", appConfiguration.getDatabaseName());
-//        config.addDataSourceProperty("portNumber", appConfiguration.getDatabasePortNumber());
-//        return new HikariDataSource(config);
-//    }
+    @Bean
+    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration, BCryptPasswordEncoder bCryptPasswordEncoder){
+        Properties props = new Properties();
+        props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
+
+        HikariConfig config = new HikariConfig(props);
+        config.addDataSourceProperty("user", appConfiguration.getDatabaseUser());
+        config.addDataSourceProperty("password", appConfiguration.getDatabasePassword());
+        config.addDataSourceProperty("databaseName", appConfiguration.getDatabaseName());
+        config.addDataSourceProperty("portNumber", appConfiguration.getDatabasePortNumber());
+        return new HikariDataSource(config);
+    }
 
     @Bean
     public Gmail gmail() throws GeneralSecurityException, IOException {
@@ -68,6 +70,11 @@ public class MessageCalendarSyncApplication extends SyncAbstract {
         return new Calendar.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
