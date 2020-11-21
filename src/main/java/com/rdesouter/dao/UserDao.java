@@ -29,7 +29,6 @@ public class UserDao {
                         "LEFT JOIN user_role ur ON ur.user_id = u.id " +
                         "LEFT JOIN role r ON r.id = ur.role_id WHERE u.name = ?")
                 ){
-            System.out.println("DAO called");
             preparedStatement.setString(1, userName);
             try(ResultSet rs = preparedStatement.executeQuery()){
                 boolean isFirst = true;

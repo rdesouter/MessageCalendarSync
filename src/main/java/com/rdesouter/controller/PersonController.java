@@ -16,7 +16,6 @@ public class PersonController {
     public PersonController(PersonDao personDao, AppConfiguration appConfiguration) {
         this.personDao = personDao;
         this.appConfiguration = appConfiguration;
-        System.out.println(new Long(appConfiguration.getTokenExpirationTime()));
     }
 
      @PostMapping("/person")
