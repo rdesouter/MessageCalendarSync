@@ -13,9 +13,6 @@ public class PersonDao {
 
     private HikariDataSource hikariDataSource;
 
-    public PersonDao() {
-    }
-
     public PersonDao(HikariDataSource hikariDataSource) {
         this.hikariDataSource = hikariDataSource;
     }

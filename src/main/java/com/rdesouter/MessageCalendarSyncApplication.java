@@ -21,6 +21,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.*;
 import java.security.GeneralSecurityException;
@@ -43,7 +44,7 @@ public class MessageCalendarSyncApplication extends SyncAbstract {
     }
 
     @Bean
-    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration){
+    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration, BCryptPasswordEncoder bCryptPasswordEncoder){
         Properties props = new Properties();
         props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
 
@@ -69,6 +70,11 @@ public class MessageCalendarSyncApplication extends SyncAbstract {
         return new Calendar.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
