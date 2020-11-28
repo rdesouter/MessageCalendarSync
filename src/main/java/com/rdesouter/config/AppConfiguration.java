@@ -8,10 +8,40 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties
 public class AppConfiguration {
 
+//    HikariCP config
     public String databasePassword;
     public String databaseUser;
     public String databasePortNumber;
     public String databaseName;
+
+//    Security config
+    public String frontendUrl;
+    public String jwtSecret;
+    public long tokenExpirationTime;
+
+    public String getJwtSecret() {
+        return jwtSecret;
+    }
+
+    public void setJwtSecret(String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
+
+    public long getTokenExpirationTime() {
+        return tokenExpirationTime;
+    }
+
+    public void setTokenExpirationTime(long tokenExpirationTime) {
+        this.tokenExpirationTime = tokenExpirationTime;
+    }
+
+    public String getFrontendUrl() {
+        return frontendUrl;
+    }
+
+    public void setFrontendUrl(String frontendUrl) {
+        this.frontendUrl = frontendUrl;
+    }
 
     public String getDatabasePassword() {
         return databasePassword;
