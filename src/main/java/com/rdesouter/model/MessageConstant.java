@@ -1,4 +1,4 @@
-package com.rdesouter.message;
+package com.rdesouter.model;
 
 import java.time.LocalDateTime;
 

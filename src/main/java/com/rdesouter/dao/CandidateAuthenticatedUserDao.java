@@ -1,7 +1,7 @@
 package com.rdesouter.dao;
 
-import com.rdesouter.model.Role;
-import com.rdesouter.model.UserWithRoles;
+import com.rdesouter.model.CandidateAuthenticatedUser;
+//import com.rdesouter.model.Role;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.stereotype.Component;
 
@@ -12,17 +12,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Component
-public class UserDao {
+public class CandidateAuthenticatedUserDao {
 
     private final HikariDataSource hikariDataSource;
 
-    public UserDao(HikariDataSource hikariDataSource) {
+    public CandidateAuthenticatedUserDao(HikariDataSource hikariDataSource) {
         this.hikariDataSource = hikariDataSource;
     }
 
-    public UserWithRoles findByName(String userName){
+    public CandidateAuthenticatedUser findByName(String userName){
         try(
                 Connection connection = hikariDataSource.getConnection();
+                //Change the prepare statement
                 PreparedStatement preparedStatement = connection.prepareStatement("" +
                         "SELECT u.id, u.name, u.password, r.id, r.name FROM " +
                         "public.user u " +
@@ -32,25 +33,19 @@ public class UserDao {
             preparedStatement.setString(1, userName);
             try(ResultSet rs = preparedStatement.executeQuery()){
                 boolean isFirst = true;
-                UserWithRoles userWithRoles = null;
+                CandidateAuthenticatedUser candidateAuthenticatedUser = null;
                 while (rs.next()){
                     if(isFirst){
-                        userWithRoles = new UserWithRoles(
+                        candidateAuthenticatedUser = new CandidateAuthenticatedUser(
                                 rs.getLong(1),
                                 rs.getString(2),
-                                new ArrayList<>(),
-                                rs.getString(3)
+                                rs.getString(3),
+                                rs.getString(4)
                         );
-                    }
-                    if(rs.getObject(4) != null){
-                        userWithRoles.roles.add(new Role(
-                                rs.getLong(4),
-                                rs.getString(5)
-                        ));
                     }
                     isFirst = false;
                 }
-                return userWithRoles;
+                return candidateAuthenticatedUser;
             }
         } catch (SQLException throwables) {
             throw new RuntimeException(throwables);

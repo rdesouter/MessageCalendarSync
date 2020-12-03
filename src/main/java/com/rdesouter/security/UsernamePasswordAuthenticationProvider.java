@@ -1,8 +1,8 @@
 package com.rdesouter.security;
 
-import com.rdesouter.dao.UserDao;
+import com.rdesouter.dao.CandidateAuthenticatedUserDao;
 import com.rdesouter.model.Role;
-import com.rdesouter.model.UserWithRoles;
+import com.rdesouter.model.CandidateAuthenticatedUser;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,11 +19,11 @@ import java.util.List;
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final UserDao userDao;
+    private final CandidateAuthenticatedUserDao candidateAuthenticatedUserDao;
 
-    public UsernamePasswordAuthenticationProvider(BCryptPasswordEncoder bCryptPasswordEncoder, UserDao userDao) {
+    public UsernamePasswordAuthenticationProvider(BCryptPasswordEncoder bCryptPasswordEncoder, CandidateAuthenticatedUserDao candidateAuthenticatedUserDao) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.userDao = userDao;
+        this.candidateAuthenticatedUserDao = candidateAuthenticatedUserDao;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
         String hashedPassword = bCryptPasswordEncoder.encode(password);
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        UserWithRoles user = userDao.findByName(username);
+        CandidateAuthenticatedUser user = candidateAuthenticatedUserDao.findByName(username);
         if(user == null || !hashedPassword.equals(user.password)){
             throw new BadCredentialsException("User name or password is not valid.");
         }

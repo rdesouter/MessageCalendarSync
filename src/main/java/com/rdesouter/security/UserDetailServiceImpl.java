@@ -1,8 +1,8 @@
 package com.rdesouter.security;
 
-import com.rdesouter.dao.UserDao;
+import com.rdesouter.dao.CandidateAuthenticatedUserDao;
+import com.rdesouter.model.CandidateAuthenticatedUser;
 import com.rdesouter.model.Role;
-import com.rdesouter.model.UserWithRoles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -17,10 +17,10 @@ import java.util.List;
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {
 
-    private final UserDao userDao;
+    private final CandidateAuthenticatedUserDao candidateAuthenticatedUserDao;
 
-    public UserDetailServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
+    public UserDetailServiceImpl(CandidateAuthenticatedUserDao candidateAuthenticatedUserDao) {
+        this.candidateAuthenticatedUserDao = candidateAuthenticatedUserDao;
     }
 
 
@@ -28,7 +28,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        UserWithRoles user = userDao.findByName(username);
+        CandidateAuthenticatedUser user = candidateAuthenticatedUserDao.findByName(username);
         for(Role role: user.roles){
             grantedAuthorities.add(new SimpleGrantedAuthority(role.name));
         }
