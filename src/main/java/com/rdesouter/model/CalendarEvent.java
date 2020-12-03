@@ -30,6 +30,11 @@ public class CalendarEvent {
     public CalendarEvent() {
     }
 
+    public CalendarEvent(String id, String subject) {
+        this.id = id;
+        this.subject = subject;
+    }
+
     public CalendarEvent(String id, String subject, String description, String address, LocalDateTime begin, LocalDateTime finish, List<String> attendees) {
         this.id = id;
         this.subject = subject;

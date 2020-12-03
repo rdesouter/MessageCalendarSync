@@ -93,4 +93,6 @@ public class MessageCalendarSyncApplication extends SyncAbstract {
         LocalServerReceiver serverReceiver = new LocalServerReceiver.Builder().setPort(8888).build();
         return new AuthorizationCodeInstalledApp(flow, serverReceiver).authorize("user-test");
     }
+
+
 }

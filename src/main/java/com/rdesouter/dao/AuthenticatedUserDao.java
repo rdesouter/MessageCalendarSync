@@ -23,9 +23,9 @@ public class AuthenticatedUserDao {
                 PreparedStatement preparedStatement = connection.prepareStatement("" +
                         "INSERT INTO public.person (name, email, refresh_token) VALUES(?,?,?)")
                 ){
-            preparedStatement.setString(1, authenticatedUser.name);
-            preparedStatement.setString(2, authenticatedUser.email);
-            preparedStatement.setString(3, authenticatedUser.refreshToken);
+            preparedStatement.setString(1, authenticatedUser.getName());
+            preparedStatement.setString(2, authenticatedUser.getEmail());
+            preparedStatement.setString(3, authenticatedUser.getRefreshToken());
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throw new RuntimeException(throwables);

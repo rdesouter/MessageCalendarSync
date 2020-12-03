@@ -11,13 +11,6 @@ public class CandidateAuthenticatedUser {
     public String login;
     public String password;
     public String role;
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))
-    private List<Message> messages;
-
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))
-    private List<Calendar> calendars;
 
     public CandidateAuthenticatedUser(Long id, String login, String password, String role) {
         this.id = id;
