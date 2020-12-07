@@ -43,18 +43,18 @@ public class MessageCalendarSyncApplication extends SyncAbstract {
         SpringApplication.run(MessageCalendarSyncApplication.class, args);
     }
 
-    @Bean
-    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration, BCryptPasswordEncoder bCryptPasswordEncoder){
-        Properties props = new Properties();
-        props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
-
-        HikariConfig config = new HikariConfig(props);
-        config.addDataSourceProperty("user", appConfiguration.getDatabaseUser());
-        config.addDataSourceProperty("password", appConfiguration.getDatabasePassword());
-        config.addDataSourceProperty("databaseName", appConfiguration.getDatabaseName());
-        config.addDataSourceProperty("portNumber", appConfiguration.getDatabasePortNumber());
-        return new HikariDataSource(config);
-    }
+//    @Bean
+//    public HikariDataSource hikariDataSource(AppConfiguration appConfiguration, BCryptPasswordEncoder bCryptPasswordEncoder){
+//        Properties props = new Properties();
+//        props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
+//
+//        HikariConfig config = new HikariConfig(props);
+//        config.addDataSourceProperty("user", appConfiguration.getDatabaseUser());
+//        config.addDataSourceProperty("password", appConfiguration.getDatabasePassword());
+//        config.addDataSourceProperty("databaseName", appConfiguration.getDatabaseName());
+//        config.addDataSourceProperty("portNumber", appConfiguration.getDatabasePortNumber());
+//        return new HikariDataSource(config);
+//    }
 
     @Bean
     public Gmail gmail() throws GeneralSecurityException, IOException {

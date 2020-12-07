@@ -1,9 +1,11 @@
-package com.rdesouter;
-
-import com.rdesouter.config.AppConfiguration;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+//package com.rdesouter;
+//
+//import com.rdesouter.config.AppConfiguration;
+//import org.springframework.boot.CommandLineRunner;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.stereotype.Component;
+//
+//@Component
 //public class MyCommandLineRunner implements CommandLineRunner {
 //
 //    private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -18,9 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //
 //    @Override
 //    public void run(String... args) throws Exception {
-//        System.out.println("commandline");
-//        System.out.println(appConfiguration.getJwtSecret());
+//        System.out.println("commandline runner...");
 //        String hashedPassword = bCryptPasswordEncoder.encode("lalala");
-//        System.out.println(hashedPassword);
+//        System.out.println("hash of string 'lalala': " + hashedPassword);
 //    }
 //}

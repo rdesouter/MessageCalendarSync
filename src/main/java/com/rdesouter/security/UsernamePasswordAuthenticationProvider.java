@@ -1,7 +1,6 @@
 package com.rdesouter.security;
 
 import com.rdesouter.dao.CandidateAuthenticatedUserDao;
-import com.rdesouter.model.Role;
 import com.rdesouter.model.CandidateAuthenticatedUser;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -33,15 +32,13 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
         String username = (String) token.getPrincipal();
         String hashedPassword = bCryptPasswordEncoder.encode(password);
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        CandidateAuthenticatedUser user = candidateAuthenticatedUserDao.findByLogin(username).get(0);
 
-        CandidateAuthenticatedUser user = candidateAuthenticatedUserDao.findByName(username);
-        if(user == null || !hashedPassword.equals(user.password)){
+        if(user == null || !hashedPassword.equals(user.getPassword())){
             throw new BadCredentialsException("User name or password is not valid.");
         }
 
-        for(Role role: user.roles){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.name));
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
 
         return new UsernamePasswordAuthenticationToken(username, password, grantedAuthorities);
     }

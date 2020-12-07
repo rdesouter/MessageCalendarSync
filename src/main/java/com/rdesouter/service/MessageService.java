@@ -9,7 +9,7 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import com.rdesouter.SyncAbstract;
-import com.rdesouter.dao.repository.MessageRepository;
+//import com.rdesouter.dao.repository.MessageRepository;
 import com.rdesouter.model.MessageConstant;
 import com.rdesouter.model.MessageMap;
 import com.rdesouter.utils.MessageUtils;
@@ -54,8 +54,8 @@ public class MessageService extends SyncAbstract implements MessageConstant {
     @Autowired
     private MessageUtils messageUtils;
 
-    @Autowired
-    private MessageRepository messageRepository;
+//    @Autowired
+//    private MessageRepository messageRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
 

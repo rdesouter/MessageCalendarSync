@@ -2,7 +2,6 @@ package com.rdesouter.security;
 
 import com.rdesouter.dao.CandidateAuthenticatedUserDao;
 import com.rdesouter.model.CandidateAuthenticatedUser;
-import com.rdesouter.model.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -25,14 +24,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+    public UserDetails loadUserByUsername(String username) {
 
-        CandidateAuthenticatedUser user = candidateAuthenticatedUserDao.findByName(username);
-        for(Role role: user.roles){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.name));
+        List<CandidateAuthenticatedUser> users = candidateAuthenticatedUserDao.findByLogin(username);
+        if(users.size() == 0){
+            throw new UsernameNotFoundException("user not found by login string");
         }
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(users.get(0).getRole()));
 
-        return new User(user.name, user.password, grantedAuthorities);
+        return new User(users.get(0).getLogin(), users.get(0).getPassword(), grantedAuthorities);
     }
 }

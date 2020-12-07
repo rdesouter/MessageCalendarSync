@@ -5,6 +5,7 @@ import com.rdesouter.model.AuthenticatedUser;
 import com.rdesouter.model.CalendarEvent;
 import com.rdesouter.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Transactional
+@Component
 public class AuthenticatedUserService {
 
     @Autowired
