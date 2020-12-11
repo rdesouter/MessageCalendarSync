@@ -61,11 +61,11 @@
 -- (4,3);
 
 
-SELECT public.user.login, public.user.password, message.*, calendar.* FROM user_message
-INNER JOIN public.user ON public.user.id = user_message.id_user
-INNER JOIN message ON message.id = user_message.id_message
-INNER JOIN calendar ON calendar.id = message.calendar_id
-ORDER BY public.user.login ASC;
+--SELECT public.user.login, public.user.password, message.*, calendar.* FROM user_message
+--INNER JOIN public.user ON public.user.id = user_message.id_user
+--INNER JOIN message ON message.id = user_message.id_message
+--INNER JOIN calendar ON calendar.id = message.calendar_id
+--ORDER BY public.user.login ASC;
 
 -- SELECT * FROM calendar
 -- INNER JOIN message ON message.calendar_id = calendar.id;
