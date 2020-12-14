@@ -9,9 +9,10 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import com.rdesouter.SyncAbstract;
-import com.rdesouter.message.MessageConstant;
-import com.rdesouter.message.MessageMap;
-import com.rdesouter.utils.MessageUtils;
+//import com.rdesouter.dao.repository.MessageRepository;
+import com.rdesouter.model.MessageConstant;
+import com.rdesouter.model.MessageMap;
+import com.rdesouter.utils.AppPropertiesValues;
 import com.rdesouter.utils.StringHandling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.transaction.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +44,7 @@ import java.util.stream.Stream;
 import static javax.mail.Message.RecipientType.TO;
 
 @Service
+@Transactional
 public class MessageService extends SyncAbstract implements MessageConstant {
 
     @Autowired
@@ -49,7 +52,10 @@ public class MessageService extends SyncAbstract implements MessageConstant {
     @Autowired
     private Gmail gmail;
     @Autowired
-    private MessageUtils messageUtils;
+    private AppPropertiesValues appPropertiesValues;
+
+//    @Autowired
+//    private MessageRepository messageRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
 
@@ -221,7 +227,7 @@ public class MessageService extends SyncAbstract implements MessageConstant {
     }
 
     public void lastMessageTimeStamp() throws IOException, ParseException {
-        String logPath = System.getProperty("user.dir") + messageUtils.getConfigValue("log.path");
+        String logPath = System.getProperty("user.dir") + appPropertiesValues.getConfigValue("log.path");
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
         Stream<String> stream = Files.lines(Paths.get(logPath));

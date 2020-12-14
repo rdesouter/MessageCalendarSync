@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @PropertySource("classpath:application.properties")
-public class MessageUtils {
+public class AppPropertiesValues {
 
     @Autowired
     private Environment env;
