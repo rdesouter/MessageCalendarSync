@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
         try(
                 Connection connection = hikariDataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("" +
-                        "INSERT INTO public.person (name, email, refresh_token) VALUES(?,?,?)")
+                        "INSERT INTO public.user (login, password, token) VALUES(?,?,?)")
         ){
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());

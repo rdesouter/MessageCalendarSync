@@ -2,6 +2,7 @@ package com.rdesouter.controller;
 
 import com.rdesouter.config.AppConfiguration;
 
+import com.rdesouter.dao.UserDao;
 import com.rdesouter.model.AuthRequest;
 import com.rdesouter.model.AuthResponse;
 import com.rdesouter.model.User;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +24,8 @@ public class UserController {
 
     private final UserService userService;
     private final AppConfiguration appConfiguration;
+    private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authManager;
     @Autowired
@@ -29,9 +33,11 @@ public class UserController {
     @Autowired
     private SecurityConfigurer securityConfigurer;
 
-    public UserController(UserService userService, AppConfiguration appConfiguration) {
+    public UserController(UserService userService, AppConfiguration appConfiguration, UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.appConfiguration = appConfiguration;
+        this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "/sign-in")
@@ -41,8 +47,9 @@ public class UserController {
 
     @PostMapping("/create")
     public void addPerson(@RequestBody User user) {
-        User emptyUser = new User((short) 1, "toto", "password", "");
-        this.userService.insert(emptyUser);
+        System.out.println(passwordEncoder.encode("password"));
+        User emptyUser = new User((short) 1, "toto", "{bcrypt}$2a$10$Bn7zA6KYo4miIcaZBRMbd.T/8sw1fz9T3Y5GLdmm5BERjGZsDmyve", "");
+        userService.insert(emptyUser);
     }
 
     @PostMapping(value = "/authenticate")

@@ -27,4 +27,8 @@ public class UserDao {
                 .setParameter("login", login)
                 .getResultList();
     }
+
+    public void save(User user){
+        em.persist(user);
+    }
 }

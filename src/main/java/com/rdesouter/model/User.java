@@ -22,6 +22,8 @@ public class User {
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))
     private List<CalendarEvent> calendars;
 
+    public User(){}
+
     public User(String login, String password, String role, String token, List<Message> messages, List<CalendarEvent> calendars) {
         this.login = login;
         this.password = password;
