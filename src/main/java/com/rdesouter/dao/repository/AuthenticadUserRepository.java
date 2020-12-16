@@ -1,11 +1,10 @@
 package com.rdesouter.dao.repository;
 
-
-import com.rdesouter.model.CalendarEvent;
+import com.rdesouter.model.AuthenticatedUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CalendarEventRepo extends JpaRepository<CalendarEvent, Integer> {
+public interface AuthenticadUserRepository extends JpaRepository<AuthenticatedUser, Integer> {
 
 }

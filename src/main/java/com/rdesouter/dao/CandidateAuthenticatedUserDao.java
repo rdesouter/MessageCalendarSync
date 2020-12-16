@@ -1,6 +1,6 @@
 package com.rdesouter.dao;
 
-import com.rdesouter.model.User;
+import com.rdesouter.model.CandidateAuthenticatedUser;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.stereotype.Component;
 
@@ -11,19 +11,19 @@ import java.util.List;
 
 @Component
 @Transactional
-public class UserDao {
+public class CandidateAuthenticatedUserDao {
 
     private final HikariDataSource hikariDataSource;
 
-    public UserDao(HikariDataSource hikariDataSource) {
+    public CandidateAuthenticatedUserDao(HikariDataSource hikariDataSource) {
         this.hikariDataSource = hikariDataSource;
     }
 
     @PersistenceContext
     EntityManager em;
 
-    public List<User> findByLogin(String login){
-        return em.createQuery("SELECT u FROM CandidateAuthenticatedUser u WHERE u.login = :login", User.class)
+    public List<CandidateAuthenticatedUser> findByLogin(String login){
+        return em.createQuery("SELECT u FROM CandidateAuthenticatedUser u WHERE u.login = :login", CandidateAuthenticatedUser.class)
                 .setParameter("login", login)
                 .getResultList();
     }

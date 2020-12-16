@@ -1,62 +1,27 @@
 package com.rdesouter.service;
 
-import com.rdesouter.dao.repository.UserRepo;
-import com.rdesouter.model.User;
+import com.rdesouter.dao.repository.AuthenticadUserRepository;
+import com.rdesouter.model.AuthenticatedUser;
 import com.rdesouter.model.CalendarEvent;
 import com.rdesouter.model.Message;
-import com.rdesouter.security.SecurityConfigurer;
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 @Transactional
-@Service
-public class UserService implements UserDetailsService {
+@Component
+public class AuthenticatedUserService {
 
     @Autowired
-    private UserRepo userRepo;
-    @Autowired
-    private SecurityConfigurer securityConfigurer;
-    @Autowired
-    private HikariDataSource hikariDataSource;
+    private AuthenticadUserRepository authUserRepo;
 
-    @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        String hashPwd = securityConfigurer.passwordEncoder().encode("ronald");
-        //TODO find by username with dao
-        return new org.springframework.security.core.userdetails.User("ronald", hashPwd, new ArrayList<>());
-    }
 
-    public void create(User user){
-        userRepo.save(user);
-    }
-
-    public void insert(User user){
-        try(
-                Connection connection = hikariDataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("" +
-                        "INSERT INTO public.person (name, email, refresh_token) VALUES(?,?,?)")
-        ){
-            preparedStatement.setString(1, user.getLogin());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getToken());
-            preparedStatement.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new RuntimeException(throwables);
-        }
-    }
-
-//    Test purpose
     public void testInsertTable() {
 
         LocalDateTime begin = LocalDateTime.of(2020,7,1,7,0,0);
@@ -96,23 +61,7 @@ public class UserService implements UserDetailsService {
         List<CalendarEvent> calendars1 = new ArrayList<>();
         calendars1.add(calendar3);
 
-        userRepo.save(new User(
-                "toto@gmail.com",
-                "test123",
-                "admin",
-                "",
-                messages,
-                calendars)
-        );
-        userRepo.save(new User(
-                "jr@google.com",
-                "jr-123",
-                "guest",
-                "",
-                messages1,
-                calendars1)
-        );
+        authUserRepo.save(new AuthenticatedUser("ronald", "test123", "admin", messages, calendars));
+        authUserRepo.save(new AuthenticatedUser("jean-robert", "jr-123", "guest",  messages1, calendars1));
     }
-
-
 }
