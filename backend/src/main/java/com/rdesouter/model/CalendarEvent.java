@@ -40,6 +40,17 @@ public class CalendarEvent {
         this.attendees = attendees;
     }
 
+    public String getId() {
+        return id;
+    }
+    public String getSubject() {
+        return subject;
+    }
 
-
+    public void setId(String id) {
+        this.id = id;
+    }
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 }

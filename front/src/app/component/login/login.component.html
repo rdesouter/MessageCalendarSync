@@ -1,15 +1,29 @@
-<div class="container-1">
-    <h1 style="text-align: center; color: #333;">Login form</h1>
+<div class="h-93-5 center-center">
 
-    <form [formGroup]="loginForm">
-        <div class="form-group m-b-1 m-t-3">
-            <label class="uppercase">enter your name</label>
-            <input class="m-b-2" type="text" formControlName="username">
-            <label class="uppercase">enter your password</label>
-            <input class="m-b-2" type="text" formControlName="password">
-        </div>
-        <div class="form-group">
-            <button (click)="checkLogin()" class="btn btn-primary w-50 uppercase">login</button>
-        </div>
-    </form>
+    <div class="container-1 b-rad-5 p-t-4 p-b-7 w-40 m-auto h-400">
+        <h1 class="txt-a-c uppercase">connection eventmessage.sync</h1>
+
+        <form [formGroup]="loginForm">
+            <div class="form-group m-b-1 m-t-3">
+                <label class="uppercase">enter your name</label>
+                <input class="m-b-2" type="text" formControlName="username">
+                <label class="uppercase">enter your password</label>
+                <input class="m-b-2" type="text" formControlName="password">
+            </div>
+            <div class="form-group">
+                <button (click)="checkLogin()" class="btn btn-primary w-50 uppercase">login</button>
+            </div>
+            <div *ngIf="error.status || error.error || error.message" class="form-group">
+                <h2>Erreur:</h2>
+                <div class="w-50">
+                    <p>TYPE: {{error.status}}</p>
+                    <p>ERROR: {{error.error}}</p> 
+                    <hr>
+                    <p class="uppercase m-t-1 txt-a-c">Essayer de vous connecter à nouveau</p>
+                </div>
+                
+            </div>
+        </form>
+    </div>
+    
 </div>

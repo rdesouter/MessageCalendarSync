@@ -116,7 +116,7 @@ public class AppConfiguration extends SyncAbstract {
 
         GoogleAuthorizationCodeFlow flow =
                 new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, gSecrets, SCOPES)
-                        .setDataStoreFactory(new FileDataStoreFactory(new File("tokens/gmail")))
+                        .setDataStoreFactory(new FileDataStoreFactory(new File("tokens/" + "ronald")))
                         .setAccessType("offline")
                         .build();
         LocalServerReceiver serverReceiver = new LocalServerReceiver.Builder().setPort(8888).build();

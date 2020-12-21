@@ -17,8 +17,10 @@ export class AuthenticationService {
       .post<any>(this.baseWsUrl + this.userUri + "/authenticate", {username, password}) 
       .pipe(
         map(userData => {
+          console.log("authService userData", userData);
+          
           sessionStorage.setItem("username", username);
-          let tokenStr = "Bearer " + userData.token;
+          let tokenStr = "Bearer " + userData.jwt;
           sessionStorage.setItem("token", tokenStr);
           return userData;
         })
