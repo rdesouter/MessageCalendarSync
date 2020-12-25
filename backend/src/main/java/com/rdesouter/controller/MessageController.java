@@ -1,5 +1,6 @@
 package com.rdesouter.controller;
 
+import com.rdesouter.model.Message;
 import com.rdesouter.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +11,11 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
+import java.util.List;
 
 @Configuration
 @EnableScheduling
+@CrossOrigin("http://localhost:4200")
 @RequestMapping(value = "/message")
 @RestController
 public class MessageController {
@@ -38,8 +41,8 @@ public class MessageController {
 //    @Scheduled(cron = "* 0/30 9-17 * * 0-7")
 //    @Scheduled(cron = "0/10 0/1 9-17 * * 0-7")
     @GetMapping()
-    public void getMessages() throws IOException, GeneralSecurityException {
-        messageService.getMessages();
+    public List<Message> getMessages() throws IOException, GeneralSecurityException {
+        return messageService.getMessages();
     }
 
     @GetMapping(value = "/logs")

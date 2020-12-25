@@ -1,1 +1,274 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;800&display=swap');
+
+$black: #000;
+$white: #fff;
+$primary: #07d1ff;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, button {
+    font-family: Poppins,Arial, Helvetica, sans-serif;
+    background-color: darken($white, $amount: 4);
+    font-size: 13.5px;
+    font-weight: 400;
+}
+
+li {
+    list-style: none;
+}
+
+button:active, button:focus {
+    outline: none;
+}
+
+.center-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+hr {
+    border: 1px solid #d9dfe4;
+}
+.container-1 {
+    margin: 10px;
+    background-color: rgb(252 252 252 / 1);
+    box-shadow: 0px 0px 4px -2px rgba(0,0,0,0.9);
+}
+
+.h-93-5 {
+    height: 93.5vh;
+}
+.h-06-5 {
+    height: 6.5vh;
+}
+.h-40-0 {
+    height: 40vh;
+}
+.w-40{
+    width: 40%;
+    min-width: 325px;
+}
+.w-50{
+    width: 50%;
+}
+.w-60{
+    width: 60%;
+}
+.w-100 {
+    width: 100%;
+}
+
+
+
+input {
+    height: 45px;
+    border: 1px solid darken($white, $amount: 16);
+    border-radius: 5px;
+    transition: all 300ms ease-in-out;
+    text-align: center;
+    color: #c7c7c7;
+    background-color: darken($white, $amount: 4);
+}
+
+textarea:focus, input:focus, select:focus {
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1) inset, 2px 2px 8px -2px rgba(20, 174, 255, 0.5);
+    outline: 0 none;
+    transition: all 500ms ease-in-out;
+}
+
+textarea:focus, input:focus.inset, select:focus.inset {
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5) inset;
+    outline: 0 none;
+    transition: all 200ms ease-in-out;
+    background-color: rgb(245, 245, 250);
+    border-radius: 5px;
+}
+
+.b-rad-5 {
+    border-radius: 5px;
+}
+
+h1,h2,h3,h4,h5 {
+    font-weight: 400;
+}
+
+
+h1,h2,h3 {
+    color: $primary;
+}
+
+h1 {
+    font-size: 25px;
+}
+h2 {
+    font-size: 20px;
+}
+h3 {
+    font-size: 15px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+.txt-a-c{
+    text-align: center;
+}
+
+.m-t-1 {
+    margin-top: 10px;
+}
+.m-t-2 {
+    margin-top: 20px;
+}
+.m-t-3 {
+    margin-top: 30px;
+}
+.m-r-05 {
+    margin-right: 5px;
+}
+.m-r-1{
+    margin-right: 10px;
+}
+.m-r-2{
+    margin-right: 20px;
+}
+
+.m-b-1 {
+    margin-bottom: 10px;
+}
+.m-b-2 {
+    margin-bottom: 20px;
+}
+.m-b-3 {
+    margin-bottom: 30px;
+}
+.m-b-4 {
+    margin-bottom: 40px;
+}
+
+.p-b-1 {
+    padding-bottom: 10px;
+}
+.p-b-2 {
+    padding-bottom: 20px;
+}
+.p-b-3 {
+    padding-bottom: 30px;
+}
+.p-b-4 {
+    padding-bottom: 40px;
+}
+.p-b-7 {
+    padding-bottom: 70px;
+}
+.p-t-1{
+    padding-top: 10px;
+}
+.p-t-2{
+    padding-top: 20px;
+}
+.p-t-3{
+    padding-top: 30px;
+}
+.p-t-4{
+    padding-top: 40px;
+}
+.p-t-6{
+    padding-top: 60px;
+}
+
+.m-auto{
+    margin: 0 auto;
+}
+
+.btn {
+    display: inline-block;
+    // font-weight: 400;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0275d8;
+    border-color: #0275d8;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #025aa5;
+    border-color: #01549b;
+}
+
+.btn-secondary {
+    color: #373a3c;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.btn-secondary:hover {
+    color: #373a3c;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #5bc0de;
+}
+.btn-info:hover {
+    color: #fff;
+    background-color: #31b0d5;
+    border-color: #2aabd2;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+}
+.btn-success:hover {
+    color: #fff;
+    background-color: #449d44;
+    border-color: #419641;
+}
+
+.btn-warning {
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+}
+.btn-warning:hover {
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #eb9316;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d9534f;
+}
+.btn-danger:hover {
+    color: #fff;
+    background-color: #c9302c;
+    border-color: #c12e2a;
+}

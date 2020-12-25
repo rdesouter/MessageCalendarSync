@@ -1,0 +1,12 @@
+<nav>
+    <div class="main-menu">
+        <div>
+            <a class="button" *ngIf="authService.isUserLoggedIn()" routerLink="/main" routerLinkActive="activebutton">Mes données</a>
+            <a class="button" *ngIf="authService.isUserLoggedIn()" routerLink="/param" routerLinkActive="activebutton">Mes paramètres</a>
+        </div>
+        <div>
+            <a class="button" *ngIf="authService.isUserLoggedIn()" routerLink="logout" routerLinkActive="activebutton">Déconnexion</a>
+            <a class="button" *ngIf="!authService.isUserLoggedIn()" routerLink="login" routerLinkActive="activebutton">Connexion</a>
+        </div>
+    </div>
+  </nav>

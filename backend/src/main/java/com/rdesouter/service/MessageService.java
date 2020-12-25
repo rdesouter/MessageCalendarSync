@@ -10,6 +10,7 @@ import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import com.rdesouter.SyncAbstract;
 //import com.rdesouter.dao.repository.MessageRepository;
+import com.rdesouter.model.CalendarEvent;
 import com.rdesouter.model.MessageConstant;
 import com.rdesouter.model.MessageMap;
 import com.rdesouter.utils.AppPropertiesValues;
@@ -104,16 +105,21 @@ public class MessageService extends SyncAbstract implements MessageConstant {
 
     /**
      * setQ("labe:yourLabelInGmail")
+     * label:yourmail@domain.be
+     *
+     * .setQ("label:dev@papymousse.be")
+     *
      * params can be the same in search
      * for searching in main inbox between two date
      * category:primary after:2020/10/18 before:2020/11/2
-     * label:yourmail@domain.be
      * */
-    public void getMessages() throws IOException, GeneralSecurityException {
+    public List<com.rdesouter.model.Message> getMessages() throws IOException, GeneralSecurityException {
 
-        ListMessagesResponse messageList = gmail.users().messages().list("me").setQ("label:dev@papymousse.be").setMaxResults(1L).execute();
+        ListMessagesResponse messageList = gmail.users().messages().list("me").setQ("label:dev@papymousse.be").setMaxResults(5L).execute();
         List<Message> messages = messageList.getMessages();
 //        System.out.println("messageList size: " + messageList.size());
+
+        List<com.rdesouter.model.Message> messagesApi = new ArrayList<>();
 
         if (messageList.isEmpty()) {
             System.out.println("No message found");
@@ -125,14 +131,18 @@ public class MessageService extends SyncAbstract implements MessageConstant {
                 message = gmail.users().messages().get("me", message.getId()).setFormat("FULL").execute();
                 MessagePart messagePart = message.getPayload();
 
+
                 String subject = "";
                 if (messagePart != null) {
                     subject = getSubjectMessage(messagePart, subject);
-                    getMapForCreateEvent(messageMap, message);
+                    //TODO before add to list check the mime type html/text or plain/text
+                    messagesApi.add(getMapForCreateEvent(messageMap, message));
 
                 }
             }
         }
+
+        return messagesApi;
     }
 
     private void getHtmlTextFromMessageParts(List<MessagePart> messageParts, StringBuilder sb) {
@@ -184,7 +194,7 @@ public class MessageService extends SyncAbstract implements MessageConstant {
         return messageMapped;
     }
 
-    private void getMapForCreateEvent(MessageMap messageMap, Message message) {
+    private com.rdesouter.model.Message getMapForCreateEvent(MessageMap messageMap, Message message) {
 
         StringBuilder sb = new StringBuilder();
         HashMap<String, String> mapForCreateEvent = new HashMap<>();
@@ -194,6 +204,11 @@ public class MessageService extends SyncAbstract implements MessageConstant {
             System.out.println("utf8 decoded body without parts: \n " + messageBody);
             //TODO need to extract from not part message as well
 
+            //Harcoded just for first test
+            CalendarEvent calendarEvent = new CalendarEvent("firstEvent", "rendez-vous pris via l'API");
+            com.rdesouter.model.Message message1 = new com.rdesouter.model.Message(message.getPayload().getBody().getData(), calendarEvent);
+            return message1;
+
         }else {
             getPlainTextFromMessageParts(message.getPayload().getParts(), sb);
             System.out.println("base64 bodyparts: " + sb);
@@ -202,15 +217,17 @@ public class MessageService extends SyncAbstract implements MessageConstant {
             System.out.println("utf8 decoded bodyparts: \n"+ messageBody);
 
             String[] contentSplitted = StringHandling.splitNewLine(messageBody);
-            extractValueFromMessageBody(contentSplitted, messageMap,mapForCreateEvent);
+            HashMap<String,String> map = extractValueFromMessageBody(contentSplitted, messageMap,mapForCreateEvent);
 
-            if(messageMapForEvent.isEmpty()){
+            if(map.isEmpty()){
                 LOGGER.warn("message contains no element for create event \n" + sb);
             }else {
-                LOGGER.info("value extracted from message body:" + messageMapForEvent);
+                LOGGER.info("value extracted from message body:" + map);
             }
 
 //            calendarService.createEvent(BEGIN_AT, FINISH_AT);
+            return new com.rdesouter.model.Message(sb.toString(), new CalendarEvent("tempId", map.get("address")));
+
         }
     }
 
