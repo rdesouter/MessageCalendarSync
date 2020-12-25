@@ -105,10 +105,13 @@ public class MessageService extends SyncAbstract implements MessageConstant {
 
     /**
      * setQ("labe:yourLabelInGmail")
+     * label:yourmail@domain.be
+     *
+     * .setQ("label:dev@papymousse.be")
+     *
      * params can be the same in search
      * for searching in main inbox between two date
      * category:primary after:2020/10/18 before:2020/11/2
-     * label:yourmail@domain.be
      * */
     public List<com.rdesouter.model.Message> getMessages() throws IOException, GeneralSecurityException {
 
@@ -132,6 +135,7 @@ public class MessageService extends SyncAbstract implements MessageConstant {
                 String subject = "";
                 if (messagePart != null) {
                     subject = getSubjectMessage(messagePart, subject);
+                    //TODO before add to list check the mime type html/text or plain/text
                     messagesApi.add(getMapForCreateEvent(messageMap, message));
 
                 }
