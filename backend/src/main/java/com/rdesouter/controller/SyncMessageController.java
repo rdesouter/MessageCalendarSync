@@ -1,7 +1,7 @@
 package com.rdesouter.controller;
 
-import com.rdesouter.model.Message;
-import com.rdesouter.service.MessageService;
+import com.rdesouter.model.SyncMessage;
+import com.rdesouter.service.SyncMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -18,10 +18,10 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200")
 @RequestMapping(value = "/message")
 @RestController
-public class MessageController {
+public class SyncMessageController {
 
     @Autowired
-    private MessageService messageService;
+    private SyncMessageService syncMessageService;
     /**
      *       ┌───────────── second (0-59)
      *       │ ┌───────────── minute (0 - 59)
@@ -41,17 +41,17 @@ public class MessageController {
 //    @Scheduled(cron = "* 0/30 9-17 * * 0-7")
 //    @Scheduled(cron = "0/10 0/1 9-17 * * 0-7")
     @GetMapping()
-    public List<Message> getMessages() throws IOException, GeneralSecurityException {
-        return messageService.getMessages();
+    public List<SyncMessage> getMessages() throws IOException, GeneralSecurityException {
+        return syncMessageService.getMessages();
     }
 
     @GetMapping(value = "/logs")
     public void getLog() throws IOException, ParseException {
-        messageService.lastMessageTimeStamp();
+        syncMessageService.lastMessageTimeStamp();
     }
 
     @PostMapping("/send-email")
     public void sendMail(@RequestBody String message) throws IOException, MessagingException {
-        messageService.sendMail(message);
+        syncMessageService.sendMail(message);
     }
 }

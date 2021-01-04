@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "calendar")
-public class CalendarEvent {
+public class SyncEvent {
 
     @Id
     @Column(length = 36)
@@ -22,15 +22,15 @@ public class CalendarEvent {
     @CollectionTable(name = "attendees")
     private List<String> attendees;
 
-    public CalendarEvent() {
+    public SyncEvent() {
     }
 
-    public CalendarEvent(String id, String subject) {
+    public SyncEvent(String id, String subject) {
         this.id = id;
         this.subject = subject;
     }
 
-    public CalendarEvent(String id, String subject, String description, String address, LocalDateTime begin, LocalDateTime finish, List<String> attendees) {
+    public SyncEvent(String id, String subject, String description, String address, LocalDateTime begin, LocalDateTime finish, List<String> attendees) {
         this.id = id;
         this.subject = subject;
         this.description = description;

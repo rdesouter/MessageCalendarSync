@@ -16,21 +16,21 @@ public class User {
     private String token;
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))
-    private List<Message> messages;
+    private List<SyncMessage> syncMessages;
 
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))
-    private List<CalendarEvent> calendars;
+    private List<SyncEvent> calendars;
 
     public User() {
     }
 
-    public User(String login, String password, String role, String token, List<Message> messages, List<CalendarEvent> calendars) {
+    public User(String login, String password, String role, String token, List<SyncMessage> syncMessages, List<SyncEvent> calendars) {
         this.login = login;
         this.password = password;
         this.role = role;
         this.token = token;
-        this.messages = messages;
+        this.syncMessages = syncMessages;
         this.calendars = calendars;
     }
 

@@ -2,8 +2,8 @@ package com.rdesouter.service;
 
 import com.rdesouter.dao.repository.UserRepo;
 import com.rdesouter.model.User;
-import com.rdesouter.model.CalendarEvent;
-import com.rdesouter.model.Message;
+import com.rdesouter.model.SyncEvent;
+import com.rdesouter.model.SyncMessage;
 import com.rdesouter.security.SecurityConfigurer;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
         LocalDateTime begin = LocalDateTime.of(2020,7,1,7,0,0);
         LocalDateTime finish = LocalDateTime.of(2020,7,1,9,30,0);
 
-        CalendarEvent calendar1 = new CalendarEvent(
+        SyncEvent calendar1 = new SyncEvent(
                 UUID.randomUUID().toString(),
                 "premier RDV",
                 "description pour le rendez-vous",
@@ -70,30 +70,30 @@ public class UserService implements UserDetailsService {
                 begin,
                 finish,
                 Arrays.asList(new String[]{"ron.desouter@gmail.com","j-r@gmail.com", "rick@morty.com"}));
-        CalendarEvent calendar2 = new CalendarEvent(UUID.randomUUID().toString(), "anniversaire");
-        CalendarEvent calendar3 = new CalendarEvent(UUID.randomUUID().toString(), "nouvel an");
+        SyncEvent calendar2 = new SyncEvent(UUID.randomUUID().toString(), "anniversaire");
+        SyncEvent calendar3 = new SyncEvent(UUID.randomUUID().toString(), "nouvel an");
 
-        List<Message> messages = new ArrayList<>();
-        Message message1 = new Message(
+        List<SyncMessage> syncMessages = new ArrayList<>();
+        SyncMessage syncMessage1 = new SyncMessage(
                 "blabla premier message",
                 calendar1);
-        Message message2 = new Message(
+        SyncMessage syncMessage2 = new SyncMessage(
                 "U2FsdXRhdGlvbnMgZGlzdGluZ3XDqWVzDQoNClLDqXN1bcOpIDogcmVuZGV6LXZvdXMgcHJpcyB2aWEgbCdBUEkNCkFkcmVzc2UgOiBydWUgZHUgdG91Y2FuLCAxMzUwIE5vZHV3ZXosIEJlbGdpcXVlDQoNClTDqWzDqXBob25lIDogMDQ4NC43MjYuNDc5DQpEYXRlIGRlIGTDqWJ1dCA6IDIwLjExLjIwMjANCkRhdGUgZGUgZmluIDogMjEuMTEuMjAyMA0KDQpGaW4gZHUgbWVzc2FnZSBxdWkgbidlc3QgcGFzIHByaXMgZW4gY29tcHRlDQoNCkNkbHQNClJvbmFsZCBEZSBTb3V0ZXI",
                 calendar2);
-        messages.add(message1);
-        messages.add(message2);
+        syncMessages.add(syncMessage1);
+        syncMessages.add(syncMessage2);
 
-        List<Message> messages1 = new ArrayList<>();
-        Message message3 = new Message(
+        List<SyncMessage> messages1 = new ArrayList<>();
+        SyncMessage syncMessage3 = new SyncMessage(
                 "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gDQpOdW5jIGVsZW1lbnR1bSBtYWduYSBlZ2V0IGVuaW0gb3JuYXJlLCBlZ2V0IHRpbmNpZHVudCBuaXNsIHByZXRpdW0uIFN1c3BlbmRpc3NlIGlkIGF1Y3RvciBtZXR1cy4gDQpTZWQgcXVpcyBydXRydW0gdXJuYS4",
                 calendar3);
-        messages1.add(message3);
+        messages1.add(syncMessage3);
 
-        List<CalendarEvent> calendars = new ArrayList<>();
+        List<SyncEvent> calendars = new ArrayList<>();
         calendars.add(calendar1);
         calendars.add(calendar2);
 
-        List<CalendarEvent> calendars1 = new ArrayList<>();
+        List<SyncEvent> calendars1 = new ArrayList<>();
         calendars1.add(calendar3);
 
         userRepo.save(new User(
@@ -101,7 +101,7 @@ public class UserService implements UserDetailsService {
                 "test123",
                 "admin",
                 "",
-                messages,
+                syncMessages,
                 calendars)
         );
         userRepo.save(new User(

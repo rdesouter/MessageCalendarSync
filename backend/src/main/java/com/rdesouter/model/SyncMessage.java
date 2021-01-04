@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "message", schema = "public")
-public class Message {
+public class SyncMessage {
 
     @Id
     @GeneratedValue
@@ -13,14 +13,18 @@ public class Message {
     private String payload;
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "calendar_id")
-    private CalendarEvent calendarEvent;
+    private SyncEvent syncEvent;
 
-    public Message() {
+    public SyncMessage() {
     }
 
-    public Message(String payload, CalendarEvent calendarEvent) {
+    public SyncMessage(String payload) {
         this.payload = payload;
-        this.calendarEvent = calendarEvent;
+    }
+
+    public SyncMessage(String payload, SyncEvent syncEvent) {
+        this.payload = payload;
+        this.syncEvent = syncEvent;
     }
 
     public int getId() {
@@ -29,7 +33,7 @@ public class Message {
     public String getPayload() {
         return payload;
     }
-    public CalendarEvent getCalendarEvent() {
-        return calendarEvent;
+    public SyncEvent getCalendarEvent() {
+        return syncEvent;
     }
 }
