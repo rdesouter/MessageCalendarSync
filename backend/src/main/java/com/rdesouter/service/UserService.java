@@ -1,5 +1,6 @@
 package com.rdesouter.service;
 
+import com.rdesouter.dao.UserDao;
 import com.rdesouter.dao.repository.UserRepo;
 import com.rdesouter.model.User;
 import com.rdesouter.model.SyncEvent;
@@ -26,14 +27,16 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepo userRepo;
     @Autowired
+    private UserDao userDao;
+    @Autowired
     private SecurityConfigurer securityConfigurer;
     @Autowired
     private HikariDataSource hikariDataSource;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        userDao.findByLogin(login);
         String hashPwd = securityConfigurer.passwordEncoder().encode("ronald");
-        //TODO find by username with dao
         return new org.springframework.security.core.userdetails.User("ronald", hashPwd, new ArrayList<>());
     }
 
@@ -98,7 +101,7 @@ public class UserService implements UserDetailsService {
 
         userRepo.save(new User(
                 "toto@gmail.com",
-                "test123",
+                securityConfigurer.passwordEncoder().encode("test123"),
                 "admin",
                 "",
                 syncMessages,
