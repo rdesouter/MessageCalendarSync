@@ -25,7 +25,7 @@ public class UserDao {
     EntityManager em;
 
     public User findByLogin(String login){
-        List<User> user = em.createQuery("SELECT u FROM public.user u WHERE u.login = :login", User.class)
+        List<User> user = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class)
                       .setParameter("login", login)
                       .getResultList();
         return user.get(0);
