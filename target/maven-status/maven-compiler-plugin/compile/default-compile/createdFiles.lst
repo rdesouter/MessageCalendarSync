@@ -1,0 +1,16 @@
+com\rdesouter\config\AppConfiguration.class
+com\rdesouter\model\CalendarEvent.class
+com\rdesouter\utils\StringHandling.class
+com\rdesouter\calendar\CalendarExploreApplication.class
+com\rdesouter\GmailExploreApplication.class
+com\rdesouter\Main.class
+com\rdesouter\message\EventTest.class
+com\rdesouter\model\DateWithTimeZone.class
+com\rdesouter\service\MessageService.class
+com\rdesouter\message\MessageMap.class
+com\rdesouter\service\CalendarService.class
+com\rdesouter\dao\PersonDao.class
+com\rdesouter\message\MessageConstant.class
+com\rdesouter\controller\PersonController.class
+com\rdesouter\controller\MessageController.class
+com\rdesouter\model\Person.class

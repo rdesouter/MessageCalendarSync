@@ -1,0 +1,38 @@
+2020-11-20 22:51:09,382 INFO org.springframework.boot.StartupInfoLogger [main] Starting MessageCalendarSyncApplication on LAPTOP-LJ377Q8B with PID 27468 (D:\ProjetRonald\MessageCalendarSync\target\classes started by Yusuduck in D:\ProjetRonald\MessageCalendarSync)
+2020-11-20 22:51:09,416 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-11-20 22:51:11,389 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-11-20 22:51:11,402 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-11-20 22:51:11,402 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-11-20 22:51:11,404 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.38]
+2020-11-20 22:51:11,545 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-11-20 22:51:11,545 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2018 ms
+2020-11-20 22:51:12,212 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-11-20 22:51:12,212 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-11-20 22:51:12,324 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-11-20 22:51:12,575 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-11-20 22:51:12,581 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-11-20 22:51:12,581 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-11-20 22:51:12,827 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-20 22:51:13,177 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'taskScheduler'
+2020-11-20 22:51:13,198 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-11-20 22:51:13,230 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path '/api'
+2020-11-20 22:51:13,249 INFO org.springframework.boot.StartupInfoLogger [main] Started MessageCalendarSyncApplication in 4.781 seconds (JVM running for 5.72)
+2020-11-20 22:53:05,182 INFO org.springframework.boot.StartupInfoLogger [main] Starting MessageCalendarSyncApplication on LAPTOP-LJ377Q8B with PID 23028 (D:\ProjetRonald\MessageCalendarSync\target\classes started by Yusuduck in D:\ProjetRonald\MessageCalendarSync)
+2020-11-20 22:53:05,190 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-11-20 22:53:07,120 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-11-20 22:53:07,133 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-11-20 22:53:07,133 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-11-20 22:53:07,134 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.38]
+2020-11-20 22:53:07,254 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-11-20 22:53:07,255 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1939 ms
+2020-11-20 22:53:07,867 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-11-20 22:53:07,868 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-11-20 22:53:07,909 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-11-20 22:53:08,132 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-11-20 22:53:08,137 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-11-20 22:53:08,137 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-11-20 22:53:08,376 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-20 22:53:08,708 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'taskScheduler'
+2020-11-20 22:53:08,734 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-11-20 22:53:08,774 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path '/api'
+2020-11-20 22:53:08,801 INFO org.springframework.boot.StartupInfoLogger [main] Started MessageCalendarSyncApplication in 4.324 seconds (JVM running for 5.211)
