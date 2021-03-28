@@ -42,8 +42,8 @@ public class UserController {
 
     @PostMapping("/create")
     public void addPerson(@RequestBody User user) {
-        User emptyUser = new User((short) 1, "toto", "password", "");
-        this.userService.create(emptyUser);
+
+        this.userService.create(user);
     }
 
     @PostMapping(value = "/authenticate")

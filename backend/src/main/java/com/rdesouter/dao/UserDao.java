@@ -1,6 +1,5 @@
 package com.rdesouter.dao;
 
-import com.rdesouter.dao.repository.UserRepo;
 import com.rdesouter.model.User;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.stereotype.Component;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.sql.PreparedStatement;
 import java.util.List;
 
 @Component
