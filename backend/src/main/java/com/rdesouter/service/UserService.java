@@ -35,9 +35,10 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        userDao.findByLogin(login);
-        String hashPwd = securityConfigurer.passwordEncoder().encode("ronald");
-        return new org.springframework.security.core.userdetails.User("ronald", hashPwd, new ArrayList<>());
+        User userFound = userDao.findByLogin(login);
+
+//        String hashPwd = securityConfigurer.passwordEncoder().encode("ronald");
+        return new org.springframework.security.core.userdetails.User(userFound.getLogin(), userFound.getPassword(), new ArrayList<>());
     }
 
     public void create(User user){

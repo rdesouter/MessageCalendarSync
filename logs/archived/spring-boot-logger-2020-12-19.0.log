@@ -1,0 +1,252 @@
+2020-12-19 12:31:41,157 INFO org.springframework.boot.StartupInfoLogger [main] Starting MessageCalendarSyncApplication using Java 1.8.0_144 on LAPTOP-LJ377Q8B with PID 15020 (D:\ProjetRonald\MessageCalendarSync\target\classes started by Yusuduck in D:\ProjetRonald\MessageCalendarSync)
+2020-12-19 12:31:41,172 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-12-19 12:31:44,703 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-12-19 12:31:44,843 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 114 ms. Found 3 JPA repository interfaces.
+2020-12-19 12:31:46,697 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-12-19 12:31:46,713 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:31:46,728 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-12-19 12:31:46,728 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2020-12-19 12:31:46,900 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-12-19 12:31:46,900 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 5400 ms
+2020-12-19 12:31:47,103 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-12-19 12:31:48,056 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-12-19 12:31:48,368 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-19 12:31:48,556 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.25.Final
+2020-12-19 12:31:48,946 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2020-12-19 12:31:49,181 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+2020-12-19 12:31:50,306 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:31:50,306 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] DROP cascade sur contrainte fk_user_id sur table calendar
+2020-12-19 12:31:50,306 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:31:50,321 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] la contrainte « fk_user_id » de la relation « calendar » n'existe pas, ignore
+2020-12-19 12:31:50,415 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-19 12:31:50,431 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-19 12:31:51,024 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-19 12:31:51,508 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:31:51,508 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:31:51,618 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:31:51,618 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:31:51,852 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@592a1882, org.springframework.security.web.context.SecurityContextPersistenceFilter@7d1f3fe9, org.springframework.security.web.header.HeaderWriterFilter@5b4954b2, org.springframework.security.web.authentication.logout.LogoutFilter@5731caaf, com.rdesouter.utils.JwtRequestFilter@6e807e2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@283d3628, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@26a45089, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@48368a08, org.springframework.security.web.session.SessionManagementFilter@57416e49, org.springframework.security.web.access.ExceptionTranslationFilter@45e11627, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@66715ca9]
+2020-12-19 12:31:52,040 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-19 12:31:52,571 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'taskScheduler'
+2020-12-19 12:31:52,602 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:31:52,633 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path '/api'
+2020-12-19 12:31:52,664 INFO org.springframework.boot.StartupInfoLogger [main] Started MessageCalendarSyncApplication in 13.039 seconds (JVM running for 14.581)
+2020-12-19 12:32:20,571 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8081-exec-9] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-19 12:32:20,572 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-9] Initializing Servlet 'dispatcherServlet'
+2020-12-19 12:32:20,585 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-9] Completed initialization in 13 ms
+2020-12-19 12:33:30,985 INFO org.springframework.boot.StartupInfoLogger [main] Starting MessageCalendarSyncApplication using Java 1.8.0_144 on LAPTOP-LJ377Q8B with PID 18940 (D:\ProjetRonald\MessageCalendarSync\target\classes started by Yusuduck in D:\ProjetRonald\MessageCalendarSync)
+2020-12-19 12:33:31,001 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-12-19 12:33:32,703 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-12-19 12:33:32,860 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 132 ms. Found 3 JPA repository interfaces.
+2020-12-19 12:33:34,250 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-12-19 12:33:34,266 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:33:34,281 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-12-19 12:33:34,281 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2020-12-19 12:33:34,453 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-12-19 12:33:34,453 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3296 ms
+2020-12-19 12:33:34,609 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-12-19 12:33:35,531 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-12-19 12:33:35,864 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-19 12:33:36,004 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.25.Final
+2020-12-19 12:33:36,395 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2020-12-19 12:33:36,723 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+2020-12-19 12:33:37,754 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:33:37,754 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] DROP cascade sur contrainte fk_user_id sur table calendar
+2020-12-19 12:33:37,754 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:33:37,754 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] la contrainte « fk_user_id » de la relation « calendar » n'existe pas, ignore
+2020-12-19 12:33:37,926 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-19 12:33:37,957 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-19 12:33:38,426 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-19 12:33:38,738 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:33:38,738 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:33:38,816 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:33:38,816 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:33:39,113 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@25fd6d1e, org.springframework.security.web.context.SecurityContextPersistenceFilter@844e66d, org.springframework.security.web.header.HeaderWriterFilter@5c8ab9de, org.springframework.security.web.authentication.logout.LogoutFilter@c318864, com.rdesouter.utils.JwtRequestFilter@53cb0bcb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@26a45089, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@33e50ff2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@23396fc0, org.springframework.security.web.session.SessionManagementFilter@3a88f6fb, org.springframework.security.web.access.ExceptionTranslationFilter@bfe47a8, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3c09a350]
+2020-12-19 12:33:39,285 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-19 12:33:39,816 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'taskScheduler'
+2020-12-19 12:33:39,832 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:33:39,863 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path '/api'
+2020-12-19 12:33:39,879 INFO org.springframework.boot.StartupInfoLogger [main] Started MessageCalendarSyncApplication in 9.997 seconds (JVM running for 11.031)
+2020-12-19 12:33:45,746 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8081-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-19 12:33:45,746 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-12-19 12:33:45,748 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-1] Completed initialization in 1 ms
+2020-12-19 12:37:08,343 INFO org.springframework.boot.StartupInfoLogger [main] Starting MessageCalendarSyncApplication using Java 1.8.0_144 on LAPTOP-LJ377Q8B with PID 4400 (D:\ProjetRonald\MessageCalendarSync\target\classes started by Yusuduck in D:\ProjetRonald\MessageCalendarSync)
+2020-12-19 12:37:08,379 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-12-19 12:37:10,096 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-12-19 12:37:10,175 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 74 ms. Found 3 JPA repository interfaces.
+2020-12-19 12:37:11,549 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-12-19 12:37:11,564 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:37:11,565 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-12-19 12:37:11,566 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2020-12-19 12:37:11,725 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-12-19 12:37:11,725 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3254 ms
+2020-12-19 12:37:11,890 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-12-19 12:37:12,736 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-12-19 12:37:12,990 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-19 12:37:13,162 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.25.Final
+2020-12-19 12:37:13,459 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2020-12-19 12:37:13,693 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+2020-12-19 12:37:14,867 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:37:14,867 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] DROP cascade sur contrainte fk_user_id sur table calendar
+2020-12-19 12:37:14,867 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:37:14,867 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] la contrainte « fk_user_id » de la relation « calendar » n'existe pas, ignore
+2020-12-19 12:37:14,982 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-19 12:37:14,998 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-19 12:37:15,545 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-19 12:37:15,857 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:37:15,857 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:37:15,935 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:37:15,935 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:37:16,138 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@c11332b, org.springframework.security.web.context.SecurityContextPersistenceFilter@26a45089, org.springframework.security.web.header.HeaderWriterFilter@2e7bb00e, org.springframework.security.web.authentication.logout.LogoutFilter@45796b2a, com.rdesouter.utils.JwtRequestFilter@51fe7f15, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5ab5924c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@704d3b00, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7e5e6573, org.springframework.security.web.session.SessionManagementFilter@844e66d, org.springframework.security.web.access.ExceptionTranslationFilter@5c8ab9de, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@48368a08]
+2020-12-19 12:37:16,294 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-19 12:37:16,747 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'taskScheduler'
+2020-12-19 12:37:16,779 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:37:16,794 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path '/api'
+2020-12-19 12:37:16,810 INFO org.springframework.boot.StartupInfoLogger [main] Started MessageCalendarSyncApplication in 9.475 seconds (JVM running for 10.482)
+2020-12-19 12:37:19,891 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8081-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-19 12:37:19,891 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-2] Initializing Servlet 'dispatcherServlet'
+2020-12-19 12:37:19,894 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-2] Completed initialization in 3 ms
+2020-12-19 12:38:16,635 INFO org.springframework.boot.StartupInfoLogger [main] Starting MessageCalendarSyncApplication using Java 1.8.0_144 on LAPTOP-LJ377Q8B with PID 6684 (D:\ProjetRonald\MessageCalendarSync\target\classes started by Yusuduck in D:\ProjetRonald\MessageCalendarSync)
+2020-12-19 12:38:16,650 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-12-19 12:38:18,191 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-12-19 12:38:18,285 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 80 ms. Found 3 JPA repository interfaces.
+2020-12-19 12:38:19,655 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-12-19 12:38:19,671 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:38:19,671 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-12-19 12:38:19,671 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2020-12-19 12:38:19,827 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-12-19 12:38:19,827 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2942 ms
+2020-12-19 12:38:19,952 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-12-19 12:38:20,829 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-12-19 12:38:21,079 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-19 12:38:21,188 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.25.Final
+2020-12-19 12:38:21,468 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2020-12-19 12:38:21,655 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+2020-12-19 12:38:22,639 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:38:22,639 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] DROP cascade sur contrainte fk_user_id sur table calendar
+2020-12-19 12:38:22,639 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:38:22,639 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] la contrainte « fk_user_id » de la relation « calendar » n'existe pas, ignore
+2020-12-19 12:38:22,686 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-19 12:38:22,702 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-19 12:38:23,405 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-19 12:38:23,811 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:38:23,811 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:38:23,889 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:38:23,889 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:38:24,108 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5d27b4c1, org.springframework.security.web.context.SecurityContextPersistenceFilter@33ebe4f0, org.springframework.security.web.header.HeaderWriterFilter@283d3628, org.springframework.security.web.authentication.logout.LogoutFilter@3c488b34, com.rdesouter.utils.JwtRequestFilter@5873f3f0, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@29147c12, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7a2a7492, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@50df37eb, org.springframework.security.web.session.SessionManagementFilter@75ed7512, org.springframework.security.web.access.ExceptionTranslationFilter@7d1f3fe9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@45bd4753]
+2020-12-19 12:38:24,311 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-19 12:38:24,873 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'taskScheduler'
+2020-12-19 12:38:24,889 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:38:24,920 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path '/api'
+2020-12-19 12:38:24,936 INFO org.springframework.boot.StartupInfoLogger [main] Started MessageCalendarSyncApplication in 9.242 seconds (JVM running for 10.226)
+2020-12-19 12:38:28,033 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8081-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-19 12:38:28,033 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-12-19 12:38:28,035 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-1] Completed initialization in 1 ms
+2020-12-19 12:38:50,777 INFO org.springframework.boot.StartupInfoLogger [main] Starting MessageCalendarSyncApplication using Java 1.8.0_144 on LAPTOP-LJ377Q8B with PID 14396 (D:\ProjetRonald\MessageCalendarSync\target\classes started by Yusuduck in D:\ProjetRonald\MessageCalendarSync)
+2020-12-19 12:38:50,777 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-12-19 12:38:52,199 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-12-19 12:38:52,355 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 142 ms. Found 3 JPA repository interfaces.
+2020-12-19 12:38:53,511 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-12-19 12:38:53,526 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:38:53,526 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-12-19 12:38:53,526 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2020-12-19 12:38:53,667 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-12-19 12:38:53,667 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2765 ms
+2020-12-19 12:38:53,792 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-12-19 12:38:54,573 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-12-19 12:38:54,776 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-19 12:38:54,885 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.25.Final
+2020-12-19 12:38:55,120 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2020-12-19 12:38:55,345 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+2020-12-19 12:38:56,188 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:38:56,188 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] DROP cascade sur contrainte fk_user_id sur table calendar
+2020-12-19 12:38:56,188 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:38:56,188 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] la contrainte « fk_user_id » de la relation « calendar » n'existe pas, ignore
+2020-12-19 12:38:56,235 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-19 12:38:56,251 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-19 12:38:56,844 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-19 12:38:57,141 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:38:57,141 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:38:57,204 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:38:57,204 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:38:57,422 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@48368a08, org.springframework.security.web.context.SecurityContextPersistenceFilter@7d1f3fe9, org.springframework.security.web.header.HeaderWriterFilter@5b4954b2, org.springframework.security.web.authentication.logout.LogoutFilter@5731caaf, com.rdesouter.utils.JwtRequestFilter@203b953c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@283d3628, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@26a45089, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@41a23470, org.springframework.security.web.session.SessionManagementFilter@57416e49, org.springframework.security.web.access.ExceptionTranslationFilter@45e11627, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@577f9dfd]
+2020-12-19 12:38:57,563 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-19 12:38:58,032 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'taskScheduler'
+2020-12-19 12:38:58,063 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:38:58,094 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path '/api'
+2020-12-19 12:38:58,110 INFO org.springframework.boot.StartupInfoLogger [main] Started MessageCalendarSyncApplication in 8.262 seconds (JVM running for 9.176)
+2020-12-19 12:39:14,653 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8081-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-19 12:39:14,653 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-2] Initializing Servlet 'dispatcherServlet'
+2020-12-19 12:39:14,655 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-2] Completed initialization in 1 ms
+2020-12-19 12:39:48,698 INFO org.springframework.boot.StartupInfoLogger [main] Starting MessageCalendarSyncApplication using Java 1.8.0_144 on LAPTOP-LJ377Q8B with PID 1260 (D:\ProjetRonald\MessageCalendarSync\target\classes started by Yusuduck in D:\ProjetRonald\MessageCalendarSync)
+2020-12-19 12:39:48,714 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-12-19 12:39:49,886 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-12-19 12:39:49,979 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 78 ms. Found 3 JPA repository interfaces.
+2020-12-19 12:39:51,104 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-12-19 12:39:51,120 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:39:51,120 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-12-19 12:39:51,120 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2020-12-19 12:39:51,260 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-12-19 12:39:51,260 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2405 ms
+2020-12-19 12:39:51,401 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-12-19 12:39:52,119 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-12-19 12:39:52,354 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-19 12:39:52,479 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.25.Final
+2020-12-19 12:39:52,791 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2020-12-19 12:39:53,010 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+2020-12-19 12:39:53,885 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:39:53,885 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] DROP cascade sur contrainte fk_user_id sur table calendar
+2020-12-19 12:39:53,885 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:39:53,885 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] la contrainte « fk_user_id » de la relation « calendar » n'existe pas, ignore
+2020-12-19 12:39:53,931 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-19 12:39:53,947 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-19 12:39:54,369 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-19 12:39:54,656 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:39:54,656 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:39:54,702 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:39:54,702 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:39:54,859 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7e5e6573, org.springframework.security.web.context.SecurityContextPersistenceFilter@26a45089, org.springframework.security.web.header.HeaderWriterFilter@2e7bb00e, org.springframework.security.web.authentication.logout.LogoutFilter@45796b2a, com.rdesouter.utils.JwtRequestFilter@5873f3f0, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5ab5924c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@704d3b00, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3005623b, org.springframework.security.web.session.SessionManagementFilter@844e66d, org.springframework.security.web.access.ExceptionTranslationFilter@5c8ab9de, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@41a23470]
+2020-12-19 12:39:55,030 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-19 12:39:55,530 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'taskScheduler'
+2020-12-19 12:39:55,562 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:39:55,593 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path '/api'
+2020-12-19 12:39:55,608 INFO org.springframework.boot.StartupInfoLogger [main] Started MessageCalendarSyncApplication in 7.775 seconds (JVM running for 8.751)
+2020-12-19 12:39:59,155 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8081-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-19 12:39:59,156 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-12-19 12:39:59,159 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-1] Completed initialization in 2 ms
+2020-12-19 12:40:27,978 INFO org.springframework.boot.StartupInfoLogger [main] Starting MessageCalendarSyncApplication using Java 1.8.0_144 on LAPTOP-LJ377Q8B with PID 20160 (D:\ProjetRonald\MessageCalendarSync\target\classes started by Yusuduck in D:\ProjetRonald\MessageCalendarSync)
+2020-12-19 12:40:27,994 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-12-19 12:40:29,369 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-12-19 12:40:29,478 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 84 ms. Found 3 JPA repository interfaces.
+2020-12-19 12:40:30,712 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8081 (http)
+2020-12-19 12:40:30,728 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:40:30,728 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-12-19 12:40:30,728 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2020-12-19 12:40:30,868 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-12-19 12:40:30,868 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2765 ms
+2020-12-19 12:40:31,009 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-12-19 12:40:31,852 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-12-19 12:40:32,056 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-19 12:40:32,180 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.25.Final
+2020-12-19 12:40:32,446 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2020-12-19 12:40:32,680 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+2020-12-19 12:40:33,540 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:40:33,540 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] DROP cascade sur contrainte fk_user_id sur table calendar
+2020-12-19 12:40:33,540 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] SQL Warning Code: 0, SQLState: 00000
+2020-12-19 12:40:33,540 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler [main] la contrainte « fk_user_id » de la relation « calendar » n'existe pas, ignore
+2020-12-19 12:40:33,586 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-19 12:40:33,586 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-19 12:40:34,258 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-19 12:40:34,650 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:40:34,650 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:40:34,760 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for everybody: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:40:34,775 WARN com.google.api.client.util.store.FileDataStoreFactory [main] unable to change permissions for owner: D:\ProjetRonald\MessageCalendarSync\tokens\gmail
+2020-12-19 12:40:35,041 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7e5e6573, org.springframework.security.web.context.SecurityContextPersistenceFilter@26a45089, org.springframework.security.web.header.HeaderWriterFilter@2e7bb00e, org.springframework.security.web.authentication.logout.LogoutFilter@45796b2a, com.rdesouter.utils.JwtRequestFilter@51fe7f15, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5ab5924c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@704d3b00, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3005623b, org.springframework.security.web.session.SessionManagementFilter@844e66d, org.springframework.security.web.access.ExceptionTranslationFilter@5c8ab9de, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@41a23470]
+2020-12-19 12:40:35,244 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-19 12:40:35,759 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'taskScheduler'
+2020-12-19 12:40:35,775 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8081"]
+2020-12-19 12:40:35,806 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8081 (http) with context path '/api'
+2020-12-19 12:40:35,822 INFO org.springframework.boot.StartupInfoLogger [main] Started MessageCalendarSyncApplication in 8.709 seconds (JVM running for 9.687)
+2020-12-19 12:40:39,459 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8081-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-19 12:40:39,460 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-12-19 12:40:39,462 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8081-exec-1] Completed initialization in 1 ms

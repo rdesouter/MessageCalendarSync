@@ -98,7 +98,6 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
 
         StringBuilder sb = new StringBuilder();
 
-
         if (message.getPayload().getParts() == null){
             String messageBody = new String(Base64.decodeBase64(message.getPayload().getBody().getData()), StandardCharsets.UTF_8);
             System.out.println("utf8 decoded body without parts: \n " + messageBody);

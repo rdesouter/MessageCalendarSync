@@ -86,6 +86,7 @@ public class AppConfiguration extends SyncAbstract {
     }
 
     @Bean
+    
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
