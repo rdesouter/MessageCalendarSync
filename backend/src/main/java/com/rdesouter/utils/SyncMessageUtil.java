@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.model.Message;
 import com.rdesouter.model.MessageConstant;
-import com.rdesouter.model.MessageMap;
+import com.rdesouter.model.MessageConfig;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -17,6 +17,7 @@ import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Properties;
 
 import static javax.mail.Message.RecipientType.TO;
@@ -24,11 +25,11 @@ import static javax.mail.Message.RecipientType.TO;
 public class SyncMessageUtil implements MessageConstant {
 
 
-    public static MessageMap getMessageConfMapped() throws IOException {
+    public static MessageConfig getMessageConfigMapped() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         mapper.findAndRegisterModules();
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        MessageMap map = mapper.readValue(new File(cl.getResource("messageConf.yml").getFile()), MessageMap.class);
+        MessageConfig map = mapper.readValue(new File(Objects.requireNonNull(cl.getResource("messageConfig.yml")).getFile()), MessageConfig.class);
         return map;
     }
 

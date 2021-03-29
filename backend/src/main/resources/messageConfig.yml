@@ -1,4 +1,4 @@
-messageMap:
+messageConfig:
   phone: "Téléphone :"
   begin: "Date de début :"
   end: "Date de fin :"

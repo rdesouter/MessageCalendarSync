@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageMap {
-    @JsonProperty("messageMap")
-    public Map<String, String> messageMap = new HashMap<>();
+public class MessageConfig {
+    @JsonProperty("messageConfig")
+    public Map<String, String> map = new HashMap<>();
 
     public String get(String key) {
-        return this.messageMap.get(key);
+        return this.map.get(key);
     }
 }

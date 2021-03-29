@@ -41,24 +41,32 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(userFound.getLogin(), userFound.getPassword(), new ArrayList<>());
     }
 
+    //put some backend security
     public void create(User user){
-        userRepo.save(user);
+        userRepo.save(
+                new User(
+                        user.getId(),
+                        user.getLogin(),
+                        securityConfigurer.passwordEncoder().encode(user.getPassword()),
+                        user.getToken()
+                )
+        );
     }
 
-    public void insert(User user){
-        try(
-                Connection connection = hikariDataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("" +
-                        "INSERT INTO public.person (name, email, refresh_token) VALUES(?,?,?)")
-        ){
-            preparedStatement.setString(1, user.getLogin());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getToken());
-            preparedStatement.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new RuntimeException(throwables);
-        }
-    }
+//    public void insert(User user){
+//        try(
+//                Connection connection = hikariDataSource.getConnection();
+//                PreparedStatement preparedStatement = connection.prepareStatement("" +
+//                        "INSERT INTO public.person (name, email, refresh_token) VALUES(?,?,?)")
+//        ){
+//            preparedStatement.setString(1, user.getLogin());
+//            preparedStatement.setString(2, user.getPassword());
+//            preparedStatement.setString(3, user.getToken());
+//            preparedStatement.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throw new RuntimeException(throwables);
+//        }
+//    }
 
 //    Test purpose
     public void testInsertTable() {
@@ -78,20 +86,20 @@ public class UserService implements UserDetailsService {
         SyncEvent calendar3 = new SyncEvent(UUID.randomUUID().toString(), "nouvel an");
 
         List<SyncMessage> syncMessages = new ArrayList<>();
-        SyncMessage syncMessage1 = new SyncMessage(
-                "blabla premier message",
-                calendar1);
-        SyncMessage syncMessage2 = new SyncMessage(
-                "U2FsdXRhdGlvbnMgZGlzdGluZ3XDqWVzDQoNClLDqXN1bcOpIDogcmVuZGV6LXZvdXMgcHJpcyB2aWEgbCdBUEkNCkFkcmVzc2UgOiBydWUgZHUgdG91Y2FuLCAxMzUwIE5vZHV3ZXosIEJlbGdpcXVlDQoNClTDqWzDqXBob25lIDogMDQ4NC43MjYuNDc5DQpEYXRlIGRlIGTDqWJ1dCA6IDIwLjExLjIwMjANCkRhdGUgZGUgZmluIDogMjEuMTEuMjAyMA0KDQpGaW4gZHUgbWVzc2FnZSBxdWkgbidlc3QgcGFzIHByaXMgZW4gY29tcHRlDQoNCkNkbHQNClJvbmFsZCBEZSBTb3V0ZXI",
-                calendar2);
-        syncMessages.add(syncMessage1);
-        syncMessages.add(syncMessage2);
+//        SyncMessage syncMessage1 = new SyncMessage(
+//                "blabla premier message",
+//                calendar1);
+//        SyncMessage syncMessage2 = new SyncMessage(
+//                "U2FsdXRhdGlvbnMgZGlzdGluZ3XDqWVzDQoNClLDqXN1bcOpIDogcmVuZGV6LXZvdXMgcHJpcyB2aWEgbCdBUEkNCkFkcmVzc2UgOiBydWUgZHUgdG91Y2FuLCAxMzUwIE5vZHV3ZXosIEJlbGdpcXVlDQoNClTDqWzDqXBob25lIDogMDQ4NC43MjYuNDc5DQpEYXRlIGRlIGTDqWJ1dCA6IDIwLjExLjIwMjANCkRhdGUgZGUgZmluIDogMjEuMTEuMjAyMA0KDQpGaW4gZHUgbWVzc2FnZSBxdWkgbidlc3QgcGFzIHByaXMgZW4gY29tcHRlDQoNCkNkbHQNClJvbmFsZCBEZSBTb3V0ZXI",
+//                calendar2);
+//        syncMessages.add(syncMessage1);
+//        syncMessages.add(syncMessage2);
 
         List<SyncMessage> messages1 = new ArrayList<>();
-        SyncMessage syncMessage3 = new SyncMessage(
-                "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gDQpOdW5jIGVsZW1lbnR1bSBtYWduYSBlZ2V0IGVuaW0gb3JuYXJlLCBlZ2V0IHRpbmNpZHVudCBuaXNsIHByZXRpdW0uIFN1c3BlbmRpc3NlIGlkIGF1Y3RvciBtZXR1cy4gDQpTZWQgcXVpcyBydXRydW0gdXJuYS4",
-                calendar3);
-        messages1.add(syncMessage3);
+//        SyncMessage syncMessage3 = new SyncMessage(
+//                "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gDQpOdW5jIGVsZW1lbnR1bSBtYWduYSBlZ2V0IGVuaW0gb3JuYXJlLCBlZ2V0IHRpbmNpZHVudCBuaXNsIHByZXRpdW0uIFN1c3BlbmRpc3NlIGlkIGF1Y3RvciBtZXR1cy4gDQpTZWQgcXVpcyBydXRydW0gdXJuYS4",
+//                calendar3);
+//        messages1.add(syncMessage3);
 
         List<SyncEvent> calendars = new ArrayList<>();
         calendars.add(calendar1);

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "calendar")
+@Table(name = "event")
 public class SyncEvent {
 
     @Id
