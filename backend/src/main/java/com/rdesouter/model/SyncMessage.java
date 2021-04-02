@@ -1,8 +1,6 @@
 package com.rdesouter.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "message", schema = "public")
@@ -12,8 +10,9 @@ public class SyncMessage {
     @GeneratedValue
     private int id;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    private List<PartMessage> parts;
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "message_part_id")
+    private MessagePortion part;
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "calendar_id")
@@ -23,16 +22,16 @@ public class SyncMessage {
     }
 
 
-    public SyncMessage(List<PartMessage> parts, SyncEvent syncEvent) {
-        this.parts = parts;
+    public SyncMessage(MessagePortion parts, SyncEvent syncEvent) {
+        this.part = parts;
         this.syncEvent = syncEvent;
     }
 
     public int getId() {
         return id;
     }
-    public List<PartMessage> getParts() {
-        return parts;
+    public MessagePortion getPart() {
+        return part;
     }
     public SyncEvent getCalendarEvent() {
         return syncEvent;

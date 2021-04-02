@@ -77,11 +77,11 @@ public class UserService implements UserDetailsService {
         SyncEvent calendar1 = new SyncEvent(
                 UUID.randomUUID().toString(),
                 "premier RDV",
-                "description pour le rendez-vous",
                 "rue de l'imaginaire 6,9000 La Lune",
                 begin,
                 finish,
-                Arrays.asList(new String[]{"ron.desouter@gmail.com","j-r@gmail.com", "rick@morty.com"}));
+                Arrays.asList(new String[]{"ron.desouter@gmail.com","j-r@gmail.com", "rick@morty.com"}),
+                "description de l'event");
         SyncEvent calendar2 = new SyncEvent(UUID.randomUUID().toString(), "anniversaire");
         SyncEvent calendar3 = new SyncEvent(UUID.randomUUID().toString(), "nouvel an");
 

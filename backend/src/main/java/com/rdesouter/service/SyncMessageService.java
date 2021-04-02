@@ -1,19 +1,16 @@
 package com.rdesouter.service;
 
-import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import com.rdesouter.SyncAbstract;
-import com.rdesouter.model.MessageConstant;
-import com.rdesouter.model.MessageConfig;
-import com.rdesouter.model.SyncMessage;
+import com.rdesouter.model.*;
+import com.rdesouter.utils.DateHandling;
 import com.rdesouter.utils.LogUtil;
 import com.rdesouter.utils.StringHandling;
 import com.rdesouter.utils.SyncMessageUtil;
-import com.sun.istack.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +22,9 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -78,30 +78,93 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                         .execute();
                 List<MessagePart> syncableMessageParts = new ArrayList<>();
                 MessagePart messagePart = message.getPayload();
-                String subject = getSubjectMessage(messagePart);
-
-                Optional<List<MessagePart>> isMultiPart = Optional.ofNullable(message.getPayload().getParts());
-                if (isMultiPart.isPresent()){
-                    syncableMessageParts = excludeAttachment(messagePart);
-                }
-
+                String subject = getHeaderValueFromMessage(messagePart, HEADERS_SUBJECT);
+                String sendingDate = getHeaderValueFromMessage(messagePart, HEADERS_SENDING_DATE);
+                String messageFrom = getHeaderValueFromMessage(messagePart, HEADERS_FROM);
+                String messageTo = getHeaderValueFromMessage(messagePart, HEADERS_TO);
 
                 MessageConfig messageConfig = SyncMessageUtil.getMessageConfigMapped();
-                HashMap<String, String> extracted = isMultiPart.isPresent() ?
-                        getValueExtracted(syncableMessageParts,messageConfig) : getValueExtracted(messagePart, messageConfig);
-                System.out.println(extracted);
+                HashMap<String, String> extracted;
+                Optional<List<MessagePart>> isMultiPart = Optional.ofNullable(messagePart.getParts());
 
-                    //depend of the result of extracted
-                    // if 0 only store subject,mailFrom,sendingDate
-                    // if >0 && < messageConfig.length store payload + subject,mailFrom,sendingDate but not createEvent
-                    // if extracted = messageConfig.length store payload + infos and createEvent
+                if (isMultiPart.isPresent()){
+                    syncableMessageParts = excludeAttachment(messagePart);
+                    extracted = getValueExtracted(syncableMessageParts, messageConfig);
+//                    System.out.println(extracted);
+                    if (extracted.size() > 0 && extracted.size() < messageConfig.map.size()) {
+                        // only store subject, messageFrom, sendingDate + payload but not create event
+                        List<MessageBody> messageBodies = new ArrayList<>();
+                        syncableMessageParts.forEach(
+                                part -> messageBodies.add(new MessageBody(
+                                        0,
+                                        part.getBody().getData(),
+                                        part.getMimeType()))
+                        );
+                        MessagePortion messagePortion = new MessagePortion(
+                                0,
+                                subject,
+                                messageFrom,
+                                sendingDate,
+                                messageBodies);
 
-//              syncMessages.add(getValueExtracted(syncableMessageParts));
+                        SyncMessage partialSyncMessage = new SyncMessage(
+                                messagePortion,
+                                new SyncEvent()// need a method to extract and check value from from message depends on value config file
+                        );
+                        syncMessages.add(partialSyncMessage);
 
+                    } else if (extracted.size() == 0) {
+                        // only store subject, comingFrom, date but not payload + not create event
+                        MessagePortion messagePortion = new MessagePortion(
+                                0,
+                                subject,
+                                messageFrom,
+                                sendingDate,
+                                Arrays.asList(new MessageBody()));
+                        SyncMessage notSyncMessage = new SyncMessage(
+                                messagePortion,
+                                new SyncEvent()
+                        );
+                        syncMessages.add(notSyncMessage);
+                    } else if (extracted.size() == messageConfig.map.size()) {
+                        // store data and create event
+                        List<MessageBody> messageBodies = new ArrayList<>();
+                        syncableMessageParts.forEach(
+                                part -> messageBodies.add(new MessageBody(
+                                        0,
+                                        part.getBody().getData(),
+                                        part.getMimeType()))
+                        );
+                        MessagePortion messagePortion = new MessagePortion(
+                                0,
+                                subject,
+                                messageFrom,
+                                sendingDate,
+                                messageBodies);
+
+                        SyncMessage fullySyncMessage = new SyncMessage(
+                                messagePortion,
+                                new SyncEvent(
+                                        UUID.randomUUID().toString(),
+                                        subject,
+                                        extracted.get("address"),
+                                        DateHandling.transformDateStringForEvent("dd.MM.yyyy", "begin", extracted),
+                                        DateHandling.transformDateStringForEvent("dd.MM.yyyy", "end", extracted),
+                                        Arrays.asList(messageFrom, messageTo),
+                                        "extra-info:" + extracted.get("phone"))
+                        );
+                        syncMessages.add(fullySyncMessage);
+
+                    }
+
+                } else {
+                    extracted = getValueExtracted(messagePart, messageConfig);
+                }
             }
         }
         return syncMessages;
     }
+
 
     private HashMap<String,String> getValueExtracted(MessagePart part, MessageConfig messageConfig) {
         byte[] bodyBytes = part.getBody().decodeData();
@@ -127,24 +190,9 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
 //        });
         return null;
 
-
-//            String messageBody = new String(Base64.decodeBase64(message.getPayload().getBody().getData()), StandardCharsets.UTF_8);
-//            System.out.println("utf8 decoded body without parts: \n " + messageBody);
-            //TODO need to extract from not part message as well
-
-            //Harcoded just for first test
+//        Harcoded just for first test
 //            SyncEvent syncEvent = new SyncEvent("firstEvent", "rendez-vous pris via l'API");
 //            SyncMessage syncMessage1 = new SyncMessage(message.getPayload().getBody().getData(), syncEvent);
-
-
-//            getPlainTextFromMessageParts(message.getPayload().getParts(), sb);
-//            System.out.println("base64 bodyparts: " + sb);
-//            byte[] bodyBytes = Base64.decodeBase64(sb.toString());
-//            String messageBody = new String(bodyBytes, StandardCharsets.UTF_8);
-//            System.out.println("utf8 decoded bodyparts: \n"+ messageBody);
-
-//            String[] contentSplitted = StringHandling.splitNewLine(messageBody);
-//            HashMap<String,String> map = extractValueFromMessageBody(contentSplitted);
 
 //            if(map.isEmpty()){
 //                LOGGER.warn("message contains no element for create event \n" + sb);
@@ -207,11 +255,11 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
         }
     }
 
-    private String getSubjectMessage(MessagePart messagePart) {
+    private String getHeaderValueFromMessage(MessagePart messagePart, String value) {
 
         List<MessagePartHeader> headers = messagePart.getHeaders();
         for (MessagePartHeader header: headers) {
-            if (header.getName().equals("Subject")) {
+            if (header.getName().equals(value)) {
                 return header.getValue().trim();
             }
         }

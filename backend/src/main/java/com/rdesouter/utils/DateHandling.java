@@ -1,9 +1,8 @@
 package com.rdesouter.utils;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 public class DateHandling {
 
@@ -19,5 +18,19 @@ public class DateHandling {
         OffsetDateTime dateTimeWithOffset = OffsetDateTime.of(date, zoneOffSet);
         System.out.println("date with offset: " + dateTimeWithOffset);
         return dateTimeWithOffset.toString();
+    }
+
+    public static LocalDateTime transformDateStringForEvent(String pattern, String value, HashMap<String,String> map){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        String begin = map.get(value).trim();
+        LocalDate localDate = LocalDate.parse(begin, formatter);
+        return LocalDateTime.of(
+                localDate.getYear(),
+                localDate.getMonthValue()+1,
+                localDate.getDayOfMonth(),
+                7,
+                0,
+                0
+        );
     }
 }

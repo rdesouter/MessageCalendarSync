@@ -12,15 +12,15 @@ public class SyncEvent {
     @Column(length = 36)
     private String id;
     private String subject;
-    private String description;
     private String address;
-    @Column(name = "beginAt", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "beginDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime begin;
-    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime finish;
+    @Column(name = "endDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime end;
     @ElementCollection
     @CollectionTable(name = "attendees")
     private List<String> attendees;
+    private String description;
 
     public SyncEvent() {
     }
@@ -30,14 +30,14 @@ public class SyncEvent {
         this.subject = subject;
     }
 
-    public SyncEvent(String id, String subject, String description, String address, LocalDateTime begin, LocalDateTime finish, List<String> attendees) {
+    public SyncEvent(String id, String subject, String address, LocalDateTime begin, LocalDateTime end, List<String> attendees, String description) {
         this.id = id;
         this.subject = subject;
-        this.description = description;
         this.address = address;
         this.begin = begin;
-        this.finish = finish;
+        this.end = end;
         this.attendees = attendees;
+        this.description = description;
     }
 
     public String getId() {
@@ -46,10 +46,22 @@ public class SyncEvent {
     public String getSubject() {
         return subject;
     }
-
-    public void setId(String id) {
-        this.id = id;
+    public String getDescription() {
+        return description;
     }
+    public String getAddress() {
+        return address;
+    }
+    public LocalDateTime getBegin() {
+        return begin;
+    }
+    public LocalDateTime getEnd() {
+        return end;
+    }
+    public List<String> getAttendees() {
+        return attendees;
+    }
+
     public void setSubject(String subject) {
         this.subject = subject;
     }
