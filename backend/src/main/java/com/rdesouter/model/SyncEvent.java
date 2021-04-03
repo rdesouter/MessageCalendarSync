@@ -21,13 +21,16 @@ public class SyncEvent {
     @CollectionTable(name = "attendees")
     private List<String> attendees;
     private String description;
+    @ElementCollection
+    @CollectionTable(name = "keyErrors")
+    private List<String> keyErrors;
 
     public SyncEvent() {
     }
 
-    public SyncEvent(String id, String subject) {
+    public SyncEvent(String id, List<String> keyErrors) {
         this.id = id;
-        this.subject = subject;
+        this.keyErrors = keyErrors;
     }
 
     public SyncEvent(String id, String subject, String address, LocalDateTime begin, LocalDateTime end, List<String> attendees, String description) {
@@ -60,6 +63,9 @@ public class SyncEvent {
     }
     public List<String> getAttendees() {
         return attendees;
+    }
+    public List<String> getKeyErrors() {
+        return keyErrors;
     }
 
     public void setSubject(String subject) {

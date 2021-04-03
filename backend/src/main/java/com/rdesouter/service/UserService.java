@@ -82,8 +82,6 @@ public class UserService implements UserDetailsService {
                 finish,
                 Arrays.asList(new String[]{"ron.desouter@gmail.com","j-r@gmail.com", "rick@morty.com"}),
                 "description de l'event");
-        SyncEvent calendar2 = new SyncEvent(UUID.randomUUID().toString(), "anniversaire");
-        SyncEvent calendar3 = new SyncEvent(UUID.randomUUID().toString(), "nouvel an");
 
         List<SyncMessage> syncMessages = new ArrayList<>();
 //        SyncMessage syncMessage1 = new SyncMessage(
@@ -103,10 +101,10 @@ public class UserService implements UserDetailsService {
 
         List<SyncEvent> calendars = new ArrayList<>();
         calendars.add(calendar1);
-        calendars.add(calendar2);
+//        calendars.add(calendar2); need to add second calendar
 
         List<SyncEvent> calendars1 = new ArrayList<>();
-        calendars1.add(calendar3);
+//        calendars1.add(calendar3);
 
         userRepo.save(new User(
                 "toto@gmail.com",

@@ -14,14 +14,18 @@ import com.rdesouter.EventMessageSyncApplication;
 import com.rdesouter.SyncAbstract;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 @Configuration
 @ConfigurationProperties
@@ -86,7 +90,6 @@ public class AppConfiguration extends SyncAbstract {
     }
 
     @Bean
-    
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
@@ -94,7 +97,8 @@ public class AppConfiguration extends SyncAbstract {
     @Bean
     public Gmail gmail() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        return   new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+        return new Gmail
+                .Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
     }
@@ -102,7 +106,8 @@ public class AppConfiguration extends SyncAbstract {
     @Bean
     public Calendar calendar() throws GeneralSecurityException, IOException {
         final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        return new Calendar.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
+        return new Calendar
+                .Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
     }
@@ -110,6 +115,13 @@ public class AppConfiguration extends SyncAbstract {
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         String CREDENTIALS_FILE_PATH = "/credentials.json";
         InputStream in = EventMessageSyncApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+//        ClassLoader classLoader = EventMessageSyncApplication.class.getClassLoader();
+//        InputStream inputStream = ClassLoader.getSystemResourceAsStream("application.properties");
+//        String text = new BufferedReader(
+//                new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+//                .lines()
+//                .collect(Collectors.joining("\n"));
+
         if (in == null) {
             throw new FileNotFoundException("Credentials file not found: " + CREDENTIALS_FILE_PATH);
         }

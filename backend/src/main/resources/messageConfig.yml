@@ -1,5 +1,7 @@
 messageConfig:
-  phone: "Téléphone :"
-  begin: "Date de début :"
-  end: "Date de fin :"
+  beginDate: "Date de début :"
+  endDate: "Date de fin :"
+  beginHour: "Heure de début :"
+  endHour: "Heure de fin :"
   address: "Adresse :"
+  phone: "Téléphone :"

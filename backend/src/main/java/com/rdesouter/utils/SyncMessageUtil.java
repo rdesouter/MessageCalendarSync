@@ -6,14 +6,12 @@ import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.model.Message;
 import com.rdesouter.model.MessageConstant;
 import com.rdesouter.model.MessageConfig;
+import org.springframework.security.authentication.AuthenticationManager;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -29,12 +27,11 @@ public class SyncMessageUtil implements MessageConstant {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         mapper.findAndRegisterModules();
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        MessageConfig map = mapper.readValue(new File(Objects.requireNonNull(cl.getResource("messageConfig.yml")).getFile()), MessageConfig.class);
-        return map;
+        return mapper.readValue(new File(Objects.requireNonNull(cl.getResource("messageConfig.yml")).getFile()), MessageConfig.class);
     }
 
 
-    public static MimeMessage createMessageWithMultiPart(String to, String from, String sub, String bodyText) throws MessagingException {
+    public static MimeMessage getMimeMessageWithHtmlPart(String to, String from, String sub, String bodyText) throws MessagingException {
         Session session = Session.getDefaultInstance(new Properties(), null);
 
         MimeMessage message = new MimeMessage(session);
@@ -52,6 +49,18 @@ public class SyncMessageUtil implements MessageConstant {
         message.addRecipient(TO, new InternetAddress(to));
         message.setSubject(sub);
         message.setContent(multipart);
+
+        return message;
+    }
+
+    public static MimeMessage getMimeMessage (String to, String from, String subject, String bodyText) throws MessagingException {
+        Session session = Session.getDefaultInstance(new Properties(), null);
+        MimeMessage message = new MimeMessage(session);
+
+        message.setFrom(new InternetAddress(from));
+        message.addRecipient(TO, new InternetAddress(to));
+        message.setSubject(subject);
+        message.setText(bodyText);
 
         return message;
     }

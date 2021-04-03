@@ -22,9 +22,6 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,10 +36,9 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
     private static final Logger LOGGER = LoggerFactory.getLogger(SyncMessageService.class);
 
     public Message sendMail(String messageBody) throws MessagingException, IOException {
-        MimeMessage messageContent = SyncMessageUtil.createMessageWithMultiPart(SENDER, RECEIVER, SUBJECT, messageBody);
+        MimeMessage messageContent = SyncMessageUtil.getMimeMessage(SENDER, RECEIVER, SUBJECT, messageBody);
         Message message = SyncMessageUtil.createMessage(messageContent);
         message = gmail.users().messages().send("me", message).execute();
-
         System.out.println("Message id: " + message.getId());
         System.out.println(message.toPrettyString());
         return message;
@@ -109,7 +105,7 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
 
                         SyncMessage partialSyncMessage = new SyncMessage(
                                 messagePortion,
-                                new SyncEvent()// need a method to extract and check value from from message depends on value config file
+                                new SyncEvent(UUID.randomUUID().toString(), findMissingsKeys(extracted, messageConfig.map))
                         );
                         syncMessages.add(partialSyncMessage);
 
@@ -120,7 +116,8 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                                 subject,
                                 messageFrom,
                                 sendingDate,
-                                Arrays.asList(new MessageBody()));
+                                Collections.singletonList(new MessageBody()));
+
                         SyncMessage notSyncMessage = new SyncMessage(
                                 messagePortion,
                                 new SyncEvent()
@@ -162,7 +159,27 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                 }
             }
         }
+
+//        TODO method to log
+//        LOGGER.warn("message contains no element for create event \n" + sb);
+//        LOGGER.info("value extracted from message body:" + map);
+
+//        Harcoded just for first test TO DELETE
+//        SyncEvent syncEvent = new SyncEvent("firstEvent", "rendez-vous pris via l'API");
+//        SyncMessage syncMessage1 = new SyncMessage(message.getPayload().getBody().getData(), syncEvent);
         return syncMessages;
+    }
+
+
+    private List<String> findMissingsKeys(HashMap<String,String> first, HashMap<String,String> hasAll){
+        List<String> missingKeysFromMessage = new ArrayList<>();
+        HashSet<String> unionKeys = new HashSet<>(first.keySet());
+
+        unionKeys.addAll(hasAll.keySet());
+        unionKeys.removeAll(first.keySet());
+        unionKeys.forEach(e -> missingKeysFromMessage.add(hasAll.get(e)));
+
+        return missingKeysFromMessage;
     }
 
 
@@ -174,7 +191,6 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
     }
 
     private HashMap<String,String> getValueExtracted(List<MessagePart> parts, MessageConfig messageConfig){
-//        StringBuilder sb = new StringBuilder();
         for(MessagePart part: parts) {
             byte[] bodyBytes = part.getBody().decodeData();
             String messageBody = new String(bodyBytes, StandardCharsets.UTF_8);
@@ -189,19 +205,6 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
 //            extractValueFromMessageBody(contentSplitted);
 //        });
         return null;
-
-//        Harcoded just for first test
-//            SyncEvent syncEvent = new SyncEvent("firstEvent", "rendez-vous pris via l'API");
-//            SyncMessage syncMessage1 = new SyncMessage(message.getPayload().getBody().getData(), syncEvent);
-
-//            if(map.isEmpty()){
-//                LOGGER.warn("message contains no element for create event \n" + sb);
-//                //TODO throw custom exception
-//                return new SyncMessage(sb.toString());
-//            }else {
-//                LOGGER.info("value extracted from message body:" + map);
-//                return new SyncMessage(sb.toString(), new SyncEvent("tempId", map.get("address")));
-//            }
     }
 
     private HashMap<String,String> extractValueFromMessageBody(String[] contentSplitted, MessageConfig messageConfig) {
