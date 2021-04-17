@@ -19,7 +19,6 @@ import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.List;
 
-@Configuration
 @EnableScheduling
 @CrossOrigin("http://localhost:4200")
 @RequestMapping(value = "/message")

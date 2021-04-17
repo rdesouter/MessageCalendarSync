@@ -2,6 +2,7 @@ package com.rdesouter.utils;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 
 public class DateHandling {
@@ -20,19 +21,32 @@ public class DateHandling {
         return dateTimeWithOffset.toString();
     }
 
-    public static LocalDateTime transformDateStringForEvent(String pattern, String value, HashMap<String,String> map){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-        String begin = map.get(value).trim();
-        LocalDate localDate = LocalDate.parse(begin, formatter);
+    public static LocalDateTime transformDateStringForEvent(String patternDate, String patternTime, String valueDate, String valueTime){
+        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern(patternDate);
 
-//        LocalTime localTime = LocalTime.parse(map.get("beginHour").trim(), DateTimeFormatter.ofPattern("HH:mm"));
-        return LocalDateTime.of(
-                localDate.getYear(),
-                localDate.getMonthValue(),
-                localDate.getDayOfMonth(),
-                7,
-                0,
-                0
-        );
+        LocalDate localDate = LocalDate.parse(valueDate.trim(), formatDate);
+
+        DateTimeFormatter formatTime = DateTimeFormatter.ofPattern(patternTime);
+        try {
+            LocalTime localTime = LocalTime.parse(valueTime.trim(), formatTime);
+            return LocalDateTime.of(
+                    localDate.getYear(),
+                    localDate.getMonthValue(),
+                    localDate.getDayOfMonth(),
+                    localTime.getHour(),
+                    localTime.getMinute(),
+                    localTime.getSecond()
+            );
+        }catch(RuntimeException e){
+            LocalDateTime now = LocalDateTime.now();
+            return LocalDateTime.of(
+                    now.getYear(),
+                    12,
+                    1,
+                    0,
+                    0,
+                    0
+            );
+        }
     }
 }

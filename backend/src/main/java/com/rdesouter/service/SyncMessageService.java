@@ -36,7 +36,6 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
     @Autowired
     private MessageRepo messageRepo;
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SyncMessageService.class);
 
     public Message sendMail(String messageBody) throws MessagingException, IOException {
@@ -58,7 +57,7 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
      * for searching in main inbox between two date
      * category:primary after:2020/10/18 before:2020/11/2
      * */
-    public List<SyncMessage> getMessages(User connected) throws IOException {
+    public List<SyncMessage> getMessages(User connectedUser) throws IOException {
         //TODO set setQ and MaxResult in param of param for user store in DB
         // of set only setQ with label and timestamp
         ListMessagesResponse messagesResponse = gmail
@@ -78,73 +77,34 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                         .execute();
                 List<MessagePart> syncableMessageParts = new ArrayList<>();
                 MessagePart messagePart = message.getPayload();
-
                 MessageHeaders messageHeaders = createMessageHeaders(messagePart);
                 MessageConfig messageConfig = SyncMessageUtil.getMessageConfigMapped();
                 HashMap<String, String> extracted;
-                Optional<List<MessagePart>> isMultiPart = Optional.ofNullable(messagePart.getParts());
 
+                Optional<List<MessagePart>> isMultiPart = Optional.ofNullable(messagePart.getParts());
                 if (isMultiPart.isPresent()){
                     syncableMessageParts = excludeAttachment(messagePart);
+                    assert syncableMessageParts != null;
                     extracted = getValueExtracted(syncableMessageParts, messageConfig);
-
-                    if (extracted.size() > 0 && extracted.size() < messageConfig.map.size()) {
-                        // only store subject, messageFrom, sendingDate + payload but not create event
-                        MessagePortion messagePortion = getMessagePortion(
-                                syncableMessageParts,
-                                messageHeaders);
-                        SyncMessage partialSyncMessage = new SyncMessage(
-                                message.getId(),
-                                messagePortion,
-                                new SyncEvent(
-                                        UUID.randomUUID().toString(),
-                                        findMissingsKeys(extracted, messageConfig.map)),
-                                connected
-                        );
-                        syncMessages.add(partialSyncMessage);
-
-                    } else if (extracted.size() == 0) {
-                        // only store subject, comingFrom, date but not payload + not create event
-                        MessagePortion messagePortion = getMessagePortionWithEmptyMessageBody(messageHeaders);
-                        SyncMessage notSyncMessage = new SyncMessage(
-                                message.getId(),
-                                messagePortion,
-                                new SyncEvent(),
-                                connected
-                        );
-                        syncMessages.add(notSyncMessage);
-
-                    } else if (extracted.size() == messageConfig.map.size()) {
-
-                        String patternDate = appPropertiesValues.getConfigValue("pattern.date");
-                        String patternHour = appPropertiesValues.getConfigValue("pattern.hour");//TODO datetime
-
-
-                        // store data and create event
-                        MessagePortion messagePortion = getMessagePortion(
-                                syncableMessageParts,
-                                messageHeaders);
-                        SyncMessage fullySyncMessage = new SyncMessage(
-                                message.getId(),
-                                messagePortion,
-                                new SyncEvent(
-                                        UUID.randomUUID().toString(),
-                                        messageHeaders.getSubject(),
-                                        extracted.get("address"),
-                                        DateHandling.transformDateStringForEvent("dd.MM.yyyy", "beginDate", extracted),
-                                        DateHandling.transformDateStringForEvent("dd.MM.yyyy", "endDate", extracted),
-                                        Arrays.asList(messageHeaders.getFrom(), messageHeaders.getTo()),
-                                        "extra-info:" + extracted.get("phone")),
-                                connected
-                        );
-                        messageRepo.save(fullySyncMessage);
-                        syncMessages.add(fullySyncMessage);
-                    }
-
+                    saveMessage(
+                            connectedUser,
+                            syncMessages,
+                            message,
+                            syncableMessageParts,
+                            messageHeaders,
+                            messageConfig,
+                            extracted);
                 } else {
                     extracted = getValueExtracted(messagePart, messageConfig);
                     syncableMessageParts.add(messagePart);
-
+                    saveMessage(
+                            connectedUser,
+                            syncMessages,
+                            message,
+                            syncableMessageParts,
+                            messageHeaders,
+                            messageConfig,
+                            extracted);
                 }
             }
         }
@@ -159,6 +119,73 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
         return syncMessages;
     }
 
+    private void saveMessage(User connectedUser, List<SyncMessage> syncMessages, Message message, List<MessagePart> syncableMessageParts, MessageHeaders messageHeaders, MessageConfig messageConfig, HashMap<String, String> extracted) {
+        if (extracted.size() > 0 && extracted.size() < messageConfig.map.size()) {
+            // only store subject, messageFrom, sendingDate + payload but not create event
+            SyncMessage partialSyncMessage = new SyncMessage(
+                    message.getId(),
+                    createMessagePortion(syncableMessageParts, messageHeaders),
+                    createPartialSyncEvent(messageConfig, extracted),
+                    connectedUser
+            );
+            syncMessages.add(partialSyncMessage);
+        } else if (extracted.size() == 0) {
+            // store subject, comingFrom, date but not payload and not create event
+            SyncMessage notSyncMessage = new SyncMessage(
+                    message.getId(),
+                    createMessagePortionWithEmptyMessageBody(messageHeaders),
+                    new SyncEvent(),
+                    connectedUser
+            );
+            syncMessages.add(notSyncMessage);
+        } else if (extracted.size() == messageConfig.map.size()) {
+            String patternDate = appPropertiesValues.getConfigValue("pattern.date");
+            String patternTime = appPropertiesValues.getConfigValue("pattern.hour");
+            // store data and create event
+            SyncMessage fullySyncMessage = new SyncMessage(
+                    message.getId(),
+                    createMessagePortion(syncableMessageParts, messageHeaders),
+                    createFullySyncEvent(messageHeaders, extracted, patternDate, patternTime),
+                    connectedUser
+            );
+            messageRepo.save(fullySyncMessage);
+            syncMessages.add(fullySyncMessage);
+        }
+    }
+
+    private SyncEvent createPartialSyncEvent(
+            MessageConfig messageConfig,
+            HashMap<String, String> extracted) {
+        return new SyncEvent(
+                UUID.randomUUID().toString(),
+                findMissingsKeys(extracted, messageConfig.map));
+    }
+
+    private SyncEvent createFullySyncEvent(
+            MessageHeaders messageHeaders,
+            HashMap<String, String> extracted,
+            String patternDate,
+            String patternTime) {
+        return new SyncEvent(
+                UUID.randomUUID().toString(),
+                messageHeaders.getSubject(),
+                extracted.get("address"),
+                DateHandling.transformDateStringForEvent(
+                        patternDate,
+                        patternTime,
+                        extracted.get("beginDate"),
+                        extracted.get("beginHour")),
+                DateHandling.transformDateStringForEvent(
+                        patternDate,
+                        patternTime,
+                        extracted.get("endDate"),
+                        extracted.get("endHour")),
+                Arrays.asList(
+                        messageHeaders.getFrom(),
+                        messageHeaders.getTo()),
+                "extra-info:" + extracted.get("phone"));
+    }
+
     private MessageHeaders createMessageHeaders(MessagePart part) {
         return new MessageHeaders(
                 getHeaderValueFromMessage(part, HEADERS_SUBJECT),
@@ -168,7 +195,7 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
         );
     }
 
-    private MessagePortion getMessagePortionWithEmptyMessageBody(MessageHeaders headers) {
+    private MessagePortion createMessagePortionWithEmptyMessageBody(MessageHeaders headers) {
         return new MessagePortion(
                 headers.getSubject(),
                 headers.getFrom(),
@@ -176,7 +203,7 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                 Collections.singletonList(new MessageBody()));
     }
 
-    private MessagePortion getMessagePortion(List<MessagePart> parts, MessageHeaders headers) {
+    private MessagePortion createMessagePortion(List<MessagePart> parts, MessageHeaders headers) {
         List<MessageBody> messageBodies = new ArrayList<>();
         parts.forEach(
                 part -> messageBodies.add(new MessageBody(
@@ -198,7 +225,6 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
         unionKeys.addAll(hasAll.keySet());
         unionKeys.removeAll(first.keySet());
         unionKeys.forEach(e -> missingKeysFromMessage.add(hasAll.get(e)));
-
         return missingKeysFromMessage;
     }
 
@@ -260,6 +286,10 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
         return null;
     }
 
+    public void lastMessageTimeStamp() throws IOException, ParseException {
+        LogUtil.lastMessageTimeStamp();
+    }
+    //Unused method for moment
     private void getHtmlTextFromMessageParts(List<MessagePart> messageParts, StringBuilder sb) {
         if (messageParts != null) {
             for (MessagePart messagePart: messageParts) {
@@ -276,7 +306,6 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
     }
     private void getPlainTextFromMessageParts(List<MessagePart> messageParts, StringBuilder sb) {
         for (MessagePart messagePart: messageParts) {
-//               System.out.println(messagePart);
             if (messagePart.getMimeType().equals("text/plain")) {
 //                   System.out.println(messagePart.getBody().getData());
                 sb.append(messagePart.getBody().getData());
@@ -286,12 +315,6 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                 getPlainTextFromMessageParts(messagePart.getParts(), sb);
             }
         }
-    }
-
-
-
-    public void lastMessageTimeStamp() throws IOException, ParseException {
-        LogUtil.lastMessageTimeStamp();
     }
 
 
