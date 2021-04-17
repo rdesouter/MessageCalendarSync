@@ -42,7 +42,6 @@ public class UserController {
 
     @PostMapping("/create")
     public void addPerson(@RequestBody User user) {
-
         this.userService.create(user);
     }
 

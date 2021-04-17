@@ -7,33 +7,40 @@ import javax.persistence.*;
 public class SyncMessage {
 
     @Id
-    @GeneratedValue
-    private int id;
+    private String id;
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "message_part_id")
-    private MessagePortion part;
+    private MessagePortion portion;
 
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "calendar_id")
+    @JoinColumn(name = "event_id")
     private SyncEvent syncEvent;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_id"))
+    private User user;
 
     public SyncMessage() {
     }
 
-
-    public SyncMessage(MessagePortion parts, SyncEvent syncEvent) {
-        this.part = parts;
+    public SyncMessage(String id, MessagePortion portion, SyncEvent syncEvent, User user) {
+        this.id = id;
+        this.portion = portion;
         this.syncEvent = syncEvent;
+        this.user = user;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
-    public MessagePortion getPart() {
-        return part;
+    public MessagePortion getPortion() {
+        return portion;
     }
-    public SyncEvent getCalendarEvent() {
+    public SyncEvent getSyncEvent() {
         return syncEvent;
+    }
+    public User getUser() {
+        return user;
     }
 }

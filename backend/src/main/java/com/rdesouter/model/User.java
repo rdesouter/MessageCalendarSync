@@ -1,5 +1,7 @@
 package com.rdesouter.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,27 +13,30 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short id;
     private String login;
+//    @JsonIgnore
     private String password;
     private String role;
     private String token;
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))
-    private List<SyncMessage> syncMessages;
+//    @OneToMany(cascade = {CascadeType.ALL})
+//    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))//TODO issue with fk null in db
+//    private List<SyncMessage> syncMessages;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))
-    private List<SyncEvent> calendars;
+//    @OneToMany(cascade = {CascadeType.ALL})
+//    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))
+//    @OneToMany(cascade = {CascadeType.ALL})
+//    private List<SyncEvent> events;
 
     public User() {
     }
 
-    public User(String login, String password, String role, String token, List<SyncMessage> syncMessages, List<SyncEvent> calendars) {
+
+    public User(short id, String login, String password, String role, String token, List<SyncMessage> syncMessages, List<SyncEvent> syncEvents) {
+        this.id = id;
         this.login = login;
         this.password = password;
         this.role = role;
         this.token = token;
-        this.syncMessages = syncMessages;
-        this.calendars = calendars;
+
     }
 
     public User(short id, String login, String password, String token) {

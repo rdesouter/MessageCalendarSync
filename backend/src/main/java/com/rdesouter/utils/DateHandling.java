@@ -24,9 +24,11 @@ public class DateHandling {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         String begin = map.get(value).trim();
         LocalDate localDate = LocalDate.parse(begin, formatter);
+
+//        LocalTime localTime = LocalTime.parse(map.get("beginHour").trim(), DateTimeFormatter.ofPattern("HH:mm"));
         return LocalDateTime.of(
                 localDate.getYear(),
-                localDate.getMonthValue()+1,
+                localDate.getMonthValue(),
                 localDate.getDayOfMonth(),
                 7,
                 0,

@@ -14,18 +14,14 @@ import com.rdesouter.EventMessageSyncApplication;
 import com.rdesouter.SyncAbstract;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 @Configuration
 @ConfigurationProperties

@@ -1,7 +1,6 @@
 package com.rdesouter.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "bodies", schema = "public")
@@ -16,6 +15,11 @@ public class MessageBody {
 
 
     public MessageBody() {
+    }
+
+    public MessageBody(String payload, String mimeType) {
+        this.payload = payload;
+        this.mimeType = mimeType;
     }
 
     public MessageBody(int id, String payload, String mimeType) {

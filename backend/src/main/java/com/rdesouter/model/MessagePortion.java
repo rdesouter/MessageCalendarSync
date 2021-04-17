@@ -1,27 +1,40 @@
 package com.rdesouter.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "message_portion", schema = "public")
 public class MessagePortion {
+//    @JsonIgnore
     @Id
     @GeneratedValue
-    private final int id;
+    private int id;
     @Column(columnDefinition="varchar(50)")
-    private final String subject;
+    private String subject;
     @Column(columnDefinition="varchar(50)")
     private String messageFrom;
     @Column(columnDefinition="varchar(50)")
     private String sendingDate;
     @Column(columnDefinition = "varchar(50)")
-    @OneToMany
-    private final List<MessageBody> messageBodies;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<MessageBody> messageBodies;
+
+    public MessagePortion() {
+    }
 
     public MessagePortion(int id, String subject, List<MessageBody> messageBodies) {
         this.id = id;
         this.subject = subject;
+        this.messageBodies = messageBodies;
+    }
+
+    public MessagePortion(String subject, String messageFrom, String sendingDate, List<MessageBody> messageBodies) {
+        this.subject = subject;
+        this.messageFrom = messageFrom;
+        this.sendingDate = sendingDate;
         this.messageBodies = messageBodies;
     }
 

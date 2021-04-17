@@ -1,13 +1,19 @@
 package com.rdesouter.controller;
 
+import com.rdesouter.dao.UserDao;
 import com.rdesouter.model.SyncMessage;
+import com.rdesouter.model.User;
 import com.rdesouter.service.SyncMessageService;
+import com.rdesouter.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
@@ -20,6 +26,10 @@ import java.util.List;
 @RestController
 public class SyncMessageController {
 
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private UserDao userDao;
     @Autowired
     private SyncMessageService syncMessageService;
     /**
@@ -41,8 +51,17 @@ public class SyncMessageController {
 //    @Scheduled(cron = "* 0/30 9-17 * * 0-7")
 //    @Scheduled(cron = "0/10 0/1 9-17 * * 0-7")
     @GetMapping()
-    public List<SyncMessage> getMessages() throws IOException, GeneralSecurityException {
-        return syncMessageService.getMessages();
+    public List<SyncMessage> getMessages(HttpServletRequest request) throws IOException {
+
+        final String authHeader = request.getHeader("Authorization");
+
+        User connected = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwt = authHeader.substring(7);
+            String username = jwtUtil.extractUserName(jwt);
+            connected = userDao.findByLogin(username);
+        }
+        return syncMessageService.getMessages(connected);
     }
 
     @GetMapping(value = "/logs")

@@ -107,6 +107,7 @@ public class UserService implements UserDetailsService {
 //        calendars1.add(calendar3);
 
         userRepo.save(new User(
+                (short)0,
                 "toto@gmail.com",
                 securityConfigurer.passwordEncoder().encode("test123"),
                 "admin",
@@ -115,6 +116,7 @@ public class UserService implements UserDetailsService {
                 calendars)
         );
         userRepo.save(new User(
+                (short)1,
                 "jr@google.com",
                 "jr-123",
                 "guest",
