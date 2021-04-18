@@ -1,16 +1,21 @@
+
+$black: #000;
+$white: #fff;
+$primary: #8bb9e7;
+
 nav {
     height: 6.5vh;
     min-height: 65px;
-    background-color: rgb(255, 255, 255);
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+    background-color: rgb(255 255 255 / 25%);
+    box-shadow: 0 2px 10px 0 rgb(0 0 0 / 12%);
     position: relative;
 }
 
 nav a {
     color: rgb(70, 70, 70);
-    margin-right: 10px;
-    padding: 23px 25px;
+    padding: 25px 35px;
     text-transform: uppercase;
+    border-right: 2px solid #ccc;
 }
 
 .main-menu {
@@ -21,8 +26,8 @@ nav a {
 }
 
 .activebutton {
-    color: #FFF!important;
-    background-color: rgb(70, 70, 70);
+    color:#52c6fb!important;
+    background-color: rgb(139 139 139 / 10%);
     font-weight: 600;
     transition: background-color 800ms ease-in-out;
 }

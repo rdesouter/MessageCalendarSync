@@ -1,1 +1,12 @@
-<p>nothing to show - check your console-log</p>
+<!-- <p>nothing to show - check your console-log</p> -->
+
+<div class="wrapper">
+    <div class="flex-container m-t-3">
+        <div *ngFor="let message of messages" class="neo-distance temp-size">
+            <p>messageID: <span>{{message.id}}</span></p>
+            <p>from: <span>{{message.portion.messageFrom}}</span></p>
+        </div>
+    </div>
+</div>
+
+

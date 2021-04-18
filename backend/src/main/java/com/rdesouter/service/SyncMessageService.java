@@ -64,10 +64,9 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                 .users().messages().list("me")
                 .setQ("label:dev@papymousse.be")
                 .setMaxResults(10L).execute();
-        List<SyncMessage> syncMessages = new ArrayList<>();
 
         if (!messagesResponse.isEmpty()) {
-//            System.out.println("Message found:");
+            List<SyncMessage> syncMessages = new ArrayList<>();
             for (Message message: messagesResponse.getMessages()) {
                 message = gmail
                         .users()
@@ -75,11 +74,19 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                         .get("me", message.getId())
                         .setFormat("FULL")
                         .execute();
+
+                //TODO encapsulate
+                // message,
+                // syncableMessageParts,
+                // messageHeaders,
+                // messageConfig,
+                // extracted
+                // to MessageToEvent
                 List<MessagePart> syncableMessageParts = new ArrayList<>();
+                HashMap<String, String> extracted;
                 MessagePart messagePart = message.getPayload();
                 MessageHeaders messageHeaders = createMessageHeaders(messagePart);
                 MessageConfig messageConfig = SyncMessageUtil.getMessageConfigMapped();
-                HashMap<String, String> extracted;
 
                 Optional<List<MessagePart>> isMultiPart = Optional.ofNullable(messagePart.getParts());
                 if (isMultiPart.isPresent()){
@@ -95,8 +102,8 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                             messageConfig,
                             extracted);
                 } else {
-                    extracted = getValueExtracted(messagePart, messageConfig);
                     syncableMessageParts.add(messagePart);
+                    extracted = getValueExtracted(messagePart, messageConfig);
                     saveMessage(
                             connectedUser,
                             syncMessages,
@@ -107,16 +114,15 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                             extracted);
                 }
             }
+            return syncMessages;
         }
-
-//        TODO method to log
+        return null;
 //        LOGGER.warn("message contains no element for create event \n" + sb);
 //        LOGGER.info("value extracted from message body:" + map);
 
 //        Harcoded just for first test TO DELETE
 //        SyncEvent syncEvent = new SyncEvent("firstEvent", "rendez-vous pris via l'API");
 //        SyncMessage syncMessage1 = new SyncMessage(message.getPayload().getBody().getData(), syncEvent);
-        return syncMessages;
     }
 
     private void saveMessage(User connectedUser, List<SyncMessage> syncMessages, Message message, List<MessagePart> syncableMessageParts, MessageHeaders messageHeaders, MessageConfig messageConfig, HashMap<String, String> extracted) {
@@ -126,8 +132,8 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                     message.getId(),
                     createMessagePortion(syncableMessageParts, messageHeaders),
                     createPartialSyncEvent(messageConfig, extracted),
-                    connectedUser
-            );
+                    connectedUser);
+
             syncMessages.add(partialSyncMessage);
         } else if (extracted.size() == 0) {
             // store subject, comingFrom, date but not payload and not create event
@@ -135,8 +141,8 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                     message.getId(),
                     createMessagePortionWithEmptyMessageBody(messageHeaders),
                     new SyncEvent(),
-                    connectedUser
-            );
+                    connectedUser);
+
             syncMessages.add(notSyncMessage);
         } else if (extracted.size() == messageConfig.map.size()) {
             String patternDate = appPropertiesValues.getConfigValue("pattern.date");
@@ -146,10 +152,10 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                     message.getId(),
                     createMessagePortion(syncableMessageParts, messageHeaders),
                     createFullySyncEvent(messageHeaders, extracted, patternDate, patternTime),
-                    connectedUser
-            );
+                    connectedUser);
+
             messageRepo.save(fullySyncMessage);
-            syncMessages.add(fullySyncMessage);
+            syncMessages.add(fullySyncMessage);//TODO remove after get repo
         }
     }
 

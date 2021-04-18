@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router, RouterLink, RouterModule, Routes } from '@angular/router';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -10,7 +11,7 @@ export class AuthenticationService {
   private baseWsUrl: string = "http://localhost:8081/api";
   private userUri: string = "/user";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
   authenticate(username: string, password: string) {
     return this.httpClient
@@ -29,11 +30,12 @@ export class AuthenticationService {
 
   isUserLoggedIn() {
     let user = sessionStorage.getItem("username");
-    console.log(!(user === null));
+    // console.log(!(user === null));
     return !(user === null);
   }
 
   logOut() {
+    this.router.navigateByUrl('/login');
     sessionStorage.removeItem("username");
   }
 

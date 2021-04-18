@@ -1,0 +1,45 @@
+$black: #000;
+$white: #fff;
+$primary: #8bb9e7;
+
+.wrapper {
+    display: flex;
+    width: 75%;
+    margin: 0 auto;
+}
+
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start; //change this value to change view arrangment
+}
+
+.neo-distance {
+    border-radius: 15px;
+    background: #ebebeb;
+    box-shadow:  11px 11px 22px #dbdbdb,
+                 -11px -11px 22px #fbfbfb;
+    // border-radius: 15px;
+    // background: linear-gradient(145deg, #d4d4d4, #fbfbfb);
+    // box-shadow:  6px 6px 16px #dfdfdf,
+    //              -6px -6px 16px #f7f7f7;
+    // border: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.temp-size {
+    height: 320px;
+    width: 320px;
+    margin:2em 2.5em;
+    text-align: left;
+    padding: 10px 15px;
+    color: darken($white, $amount: 35);
+    word-wrap: break-word;
+}
+
+.temp-size span{
+    color: $primary;
+}
+
+::ng-deep body {
+    background: linear-gradient(145deg, #ebebeb, #ebebeb)!important;
+}

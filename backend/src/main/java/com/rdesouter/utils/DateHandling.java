@@ -2,8 +2,6 @@ package com.rdesouter.utils;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
 
 public class DateHandling {
 
@@ -23,7 +21,7 @@ public class DateHandling {
 
     public static LocalDateTime transformDateStringForEvent(String patternDate, String patternTime, String valueDate, String valueTime){
         DateTimeFormatter formatDate = DateTimeFormatter.ofPattern(patternDate);
-
+        //TODO verify patternDate otherwise create event at 01.12.[year_of_request]
         LocalDate localDate = LocalDate.parse(valueDate.trim(), formatDate);
 
         DateTimeFormatter formatTime = DateTimeFormatter.ofPattern(patternTime);

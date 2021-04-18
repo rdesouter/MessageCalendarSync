@@ -12,16 +12,16 @@ export class BasicAuthInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log("inside interceptor", sessionStorage.getItem('token'));
     // console.log(JSON.parse(sessionStorage.getItem('token') || '{}'));
-
     console.log(req);
+
     if (sessionStorage.getItem('username') && sessionStorage.getItem('token')){
+      console.log("passe par l'interceptor ?");
       req = req.clone({
         setHeaders: {
-          Authorization: JSON.parse(sessionStorage.getItem('token') || '{}')
+          Authorization: sessionStorage.getItem('token') || '{}'
         }
       });
     }
-    
     return next.handle(req);
   }
 }

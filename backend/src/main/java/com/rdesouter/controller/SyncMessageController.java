@@ -51,9 +51,7 @@ public class SyncMessageController {
 //    @Scheduled(cron = "0/10 0/1 9-17 * * 0-7")
     @GetMapping()
     public List<SyncMessage> getMessages(HttpServletRequest request) throws IOException {
-
         final String authHeader = request.getHeader("Authorization");
-
         User connected = null;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
@@ -61,6 +59,7 @@ public class SyncMessageController {
             connected = userDao.findByLogin(username);
         }
         return syncMessageService.getMessages(connected);
+
     }
 
     @GetMapping(value = "/logs")
