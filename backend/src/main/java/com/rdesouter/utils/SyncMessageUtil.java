@@ -23,13 +23,18 @@ import static javax.mail.Message.RecipientType.TO;
 public class SyncMessageUtil implements MessageConstant {
 
 
-    public static MessageConfig getMessageConfigMapped() throws IOException {
+    public static MessageConfig getMessageConfigMapped() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         mapper.findAndRegisterModules();
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        return mapper.readValue(new File(Objects.requireNonNull(cl.getResource("messageConfig.yml")).getFile()), MessageConfig.class);
+        try {
+            File conf = new File(Objects.requireNonNull(cl.getResource("messageConfig.yml")).getFile());
+            return mapper.readValue(conf, MessageConfig.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-
 
     public static MimeMessage getMimeMessageWithHtmlPart(String to, String from, String sub, String bodyText) throws MessagingException {
         Session session = Session.getDefaultInstance(new Properties(), null);

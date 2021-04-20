@@ -59,7 +59,6 @@ public class SyncMessageController {
             connected = userDao.findByLogin(username);
         }
         return syncMessageService.getMessages(connected);
-
     }
 
     @GetMapping(value = "/logs")

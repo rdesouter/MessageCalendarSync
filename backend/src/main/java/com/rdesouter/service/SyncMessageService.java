@@ -7,6 +7,7 @@ import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import com.rdesouter.SyncAbstract;
 import com.rdesouter.dao.repository.MessageRepo;
+import com.rdesouter.dao.repository.MessageRepoCustom;
 import com.rdesouter.model.*;
 import com.rdesouter.utils.*;
 import org.slf4j.Logger;
@@ -35,8 +36,11 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
     private AppPropertiesValues appPropertiesValues;
     @Autowired
     private MessageRepo messageRepo;
+    @Autowired
+    private MessageRepoCustom messageRepoCustom;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SyncMessageService.class);
+    private static final MessageConfig MESSAGE_CONFIG = SyncMessageUtil.getMessageConfigMapped();
 
     public Message sendMail(String messageBody) throws MessagingException, IOException {
         MimeMessage messageContent = SyncMessageUtil.getMimeMessage(SENDER, RECEIVER, SUBJECT, messageBody);
@@ -74,25 +78,23 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                         .get("me", message.getId())
                         .setFormat("FULL")
                         .execute();
-
                 //TODO encapsulate
                 // message,
                 // syncableMessageParts,
                 // messageHeaders,
-                // messageConfig,
                 // extracted
                 // to MessageToEvent
                 List<MessagePart> syncableMessageParts = new ArrayList<>();
                 HashMap<String, String> extracted;
                 MessagePart messagePart = message.getPayload();
                 MessageHeaders messageHeaders = createMessageHeaders(messagePart);
-                MessageConfig messageConfig = SyncMessageUtil.getMessageConfigMapped();
+                MessageConfig messageConfig = SyncMessageUtil.getMessageConfigMapped(); // TODO should be done only once put as static
 
                 Optional<List<MessagePart>> isMultiPart = Optional.ofNullable(messagePart.getParts());
                 if (isMultiPart.isPresent()){
                     syncableMessageParts = excludeAttachment(messagePart);
-                    assert syncableMessageParts != null;
                     extracted = getValueExtracted(syncableMessageParts, messageConfig);
+                    messageRepoCustom.findById(message.getId());
                     saveMessage(
                             connectedUser,
                             syncMessages,
@@ -134,7 +136,9 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                     createPartialSyncEvent(messageConfig, extracted),
                     connectedUser);
 
+//            messageRepo.save(partialSyncMessage);
             syncMessages.add(partialSyncMessage);
+
         } else if (extracted.size() == 0) {
             // store subject, comingFrom, date but not payload and not create event
             SyncMessage notSyncMessage = new SyncMessage(
@@ -143,7 +147,9 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                     new SyncEvent(),
                     connectedUser);
 
+//            messageRepo.save(notSyncMessage);
             syncMessages.add(notSyncMessage);
+
         } else if (extracted.size() == messageConfig.map.size()) {
             String patternDate = appPropertiesValues.getConfigValue("pattern.date");
             String patternTime = appPropertiesValues.getConfigValue("pattern.hour");
@@ -154,7 +160,7 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                     createFullySyncEvent(messageHeaders, extracted, patternDate, patternTime),
                     connectedUser);
 
-            messageRepo.save(fullySyncMessage);
+//            messageRepo.save(fullySyncMessage);
             syncMessages.add(fullySyncMessage);//TODO remove after get repo
         }
     }
