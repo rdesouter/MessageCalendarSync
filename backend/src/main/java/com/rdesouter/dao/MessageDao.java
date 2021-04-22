@@ -16,12 +16,14 @@ public class MessageDao implements MessageRepoCustom {
     EntityManager em;
 
     @Override
-    public void findById(String id) {
-        SyncMessage syncMessageList = em
-                .createQuery("SELECT m FROM SyncMessage m WHERE m.id = :id", SyncMessage.class)
-                .setParameter("id", id)
-                .getSingleResult();
-
-        System.out.println(syncMessageList.toString());
+    public SyncMessage findById(String id) {
+        try {
+            return em
+                    .createQuery("SELECT m FROM SyncMessage m WHERE m.id = :id", SyncMessage.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 }

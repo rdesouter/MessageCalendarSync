@@ -62,6 +62,7 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
      * category:primary after:2020/10/18 before:2020/11/2
      * */
     public List<SyncMessage> getMessages(User connectedUser) throws IOException {
+        List<SyncMessage> list =messageRepo.findAll();
         //TODO set setQ and MaxResult in param of param for user store in DB
         // of set only setQ with label and timestamp
         ListMessagesResponse messagesResponse = gmail
@@ -91,10 +92,11 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                 MessageConfig messageConfig = SyncMessageUtil.getMessageConfigMapped(); // TODO should be done only once put as static
 
                 Optional<List<MessagePart>> isMultiPart = Optional.ofNullable(messagePart.getParts());
+//                SyncMessage syncMessage = messageRepoCustom.findById(message.getId());
                 if (isMultiPart.isPresent()){
                     syncableMessageParts = excludeAttachment(messagePart);
                     extracted = getValueExtracted(syncableMessageParts, messageConfig);
-                    messageRepoCustom.findById(message.getId());
+
                     saveMessage(
                             connectedUser,
                             syncMessages,

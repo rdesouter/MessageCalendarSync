@@ -1,6 +1,8 @@
 package com.rdesouter.dao.repository;
 
+import com.rdesouter.model.SyncMessage;
+
 public interface MessageRepoCustom {
 
-    void findById(String id);
+    SyncMessage findById(String id);
 }
