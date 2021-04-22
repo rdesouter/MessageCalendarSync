@@ -43,13 +43,12 @@ public class UserService implements UserDetailsService {
 
     //put some backend security
     public void create(User user){
-        userRepo.save(
-                new User(
+        userRepo.save(new User(
                         user.getId(),
                         user.getLogin(),
+                        "admin",
                         securityConfigurer.passwordEncoder().encode(user.getPassword()),
-                        user.getToken()
-                )
+                        user.getToken())
         );
     }
 
@@ -111,18 +110,14 @@ public class UserService implements UserDetailsService {
                 "toto@gmail.com",
                 securityConfigurer.passwordEncoder().encode("test123"),
                 "admin",
-                "",
-                syncMessages,
-                calendars)
+                "")
         );
         userRepo.save(new User(
                 (short)1,
                 "jr@google.com",
                 "jr-123",
                 "guest",
-                "",
-                messages1,
-                calendars1)
+                "")
         );
     }
 

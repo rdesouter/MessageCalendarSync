@@ -12,13 +12,12 @@ public class MessagePortion {
     @Id
     @GeneratedValue
     private int id;
-    @Column(columnDefinition="varchar(50)")
+    @Column(columnDefinition="varchar(255)")
     private String subject;
-    @Column(columnDefinition="varchar(50)")
+    @Column(columnDefinition="varchar(255)")
     private String messageFrom;
     @Column(columnDefinition="varchar(50)")
     private String sendingDate;
-    @Column(columnDefinition = "varchar(50)")
     @OneToMany(cascade = CascadeType.ALL)
     private List<MessageBody> messageBodies;
 

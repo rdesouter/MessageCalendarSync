@@ -9,7 +9,7 @@ import java.util.List;
 public class SyncEvent {
 
     @Id
-    @Column(length = 36)
+//    @Column(length = 36)
     private String id;
     private String subject;
     private String address;
@@ -26,6 +26,10 @@ public class SyncEvent {
     private List<String> keyErrors;
 
     public SyncEvent() {
+    }
+
+    public SyncEvent(String id) {
+        this.id = id;
     }
 
     public SyncEvent(String id, List<String> keyErrors) {

@@ -17,32 +17,15 @@ public class User {
     private String password;
     private String role;
     private String token;
-//    @OneToMany(cascade = {CascadeType.ALL})
-//    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))//TODO issue with fk null in db
-//    private List<SyncMessage> syncMessages;
-
-//    @OneToMany(cascade = {CascadeType.ALL})
-//    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user_id"))
-//    @OneToMany(cascade = {CascadeType.ALL})
-//    private List<SyncEvent> events;
 
     public User() {
     }
 
-
-    public User(short id, String login, String password, String role, String token, List<SyncMessage> syncMessages, List<SyncEvent> syncEvents) {
+    public User(short id, String login, String password, String role, String token) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.role = role;
-        this.token = token;
-
-    }
-
-    public User(short id, String login, String password, String token) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
         this.token = token;
     }
 
