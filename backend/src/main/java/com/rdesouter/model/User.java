@@ -38,6 +38,9 @@ public class User {
     public String getPassword() {
         return password;
     }
+    public String getRole() {
+        return role;
+    }
     public String getToken() {
         return token;
     }

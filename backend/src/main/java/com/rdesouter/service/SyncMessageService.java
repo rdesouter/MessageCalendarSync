@@ -8,6 +8,8 @@ import com.google.api.services.gmail.model.MessagePartHeader;
 import com.rdesouter.SyncAbstract;
 import com.rdesouter.dao.repository.MessageRepo;
 import com.rdesouter.dao.repository.MessageRepoCustom;
+import com.rdesouter.dto.SyncMessageDto;
+import com.rdesouter.dto.UserDto;
 import com.rdesouter.model.*;
 import com.rdesouter.utils.*;
 import org.slf4j.Logger;
@@ -61,12 +63,11 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
      * for searching in main inbox between two date
      * category:primary after:2020/10/18 before:2020/11/2
      * */
-    public List<SyncMessage> getMessages(User connectedUser) throws IOException {
+    public List<SyncMessageDto> getMessages(User connectedUser) throws IOException {
         //TODO set setQ and MaxResult in param of param for user store in DB
         // of set only setQ with label and timestamp
         ListMessagesResponse messagesResponse = gmail.users()
-                .messages()
-                .list("me")
+                .messages().list("me")
                 .setQ("label:dev@papymousse.be")
                 .setMaxResults(10L).execute();
         if (!messagesResponse.isEmpty()) {
@@ -77,13 +78,13 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                         .get("me", message.getId())
                         .setFormat("FULL")
                         .execute();
-                SyncMessage messageAlreadyStored = messageRepoCustom.findById(message.getId());
-                if (messageAlreadyStored == null){
+                SyncMessage synced = messageRepoCustom.findById(message.getId());
+                if (synced == null){
                     PreparedSyncMessage preparedSyncMessage = getPreparedSyncMessage(message);
                     syncMessages.add(saveMessage(connectedUser, preparedSyncMessage));
                 }
             }
-            return messageRepo.findAll();
+            return messageRepo.findAll().stream().map(this::convert).collect(Collectors.toList());
         } else {
             LOGGER.debug("no message was found: " + messagesResponse.getMessages());
             return null;
@@ -101,7 +102,6 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                 .setMessage(message)
                 .setConfig(MESSAGE_CONFIG)
                 .setHeaders(createMessageHeaders(messagePart));
-
         if (isMultiPart.isPresent()){
             preparedSyncMessage
                     .setParts(excludeAttachment(messagePart))
@@ -140,7 +140,7 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
             messageRepo.save(notSyncMessage);
             return notSyncMessage;
 
-        } else if (preparedSyncMessage.getExtraced().size() == MESSAGE_CONFIG.map.size()) {
+        } else if (preparedSyncMessage.getExtraced().size() == preparedSyncMessage.getConfig().map.size()) {
             String patternDate = appPropertiesValues.getConfigValue("pattern.date");
             String patternTime = appPropertiesValues.getConfigValue("pattern.hour");
             // store data and create event
@@ -280,6 +280,16 @@ public class SyncMessageService extends SyncAbstract implements MessageConstant 
                     .collect(Collectors.toList());
         }
         return null;
+    }
+
+    private SyncMessageDto convert(SyncMessage syncMessage) {
+        return new SyncMessageDto(
+                syncMessage.getPortion(),
+                syncMessage.getSyncEvent(),
+                new UserDto(
+                        syncMessage.getUser().getLogin(),
+                        syncMessage.getUser().getRole())
+        );
     }
 
     public void lastMessageTimeStamp() throws IOException, ParseException {

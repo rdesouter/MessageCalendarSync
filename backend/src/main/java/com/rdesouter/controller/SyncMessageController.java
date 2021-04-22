@@ -1,6 +1,7 @@
 package com.rdesouter.controller;
 
 import com.rdesouter.dao.UserDao;
+import com.rdesouter.dto.SyncMessageDto;
 import com.rdesouter.model.SyncMessage;
 import com.rdesouter.model.User;
 import com.rdesouter.service.SyncMessageService;
@@ -50,7 +51,7 @@ public class SyncMessageController {
 //    @Scheduled(cron = "* 0/30 9-17 * * 0-7")
 //    @Scheduled(cron = "0/10 0/1 9-17 * * 0-7")
     @GetMapping()
-    public List<SyncMessage> getMessages(HttpServletRequest request) throws IOException {
+    public List<SyncMessageDto> getMessages(HttpServletRequest request) throws IOException {
         final String authHeader = request.getHeader("Authorization");
         User connected = null;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
