@@ -1,12 +1,20 @@
-<!-- <p>nothing to show - check your console-log</p> -->
-
-<div class="wrapper">
-    <div class="flex-container m-t-3">
-        <div *ngFor="let message of messages" class="neo-distance temp-size">
-            <p>messageID: <span>{{message.id}}</span></p>
-            <p>from: <span>{{message.portion.messageFrom}}</span></p>
+<div class="main-grid">
+    <div class="message-list">
+        <h3>Emails reçus ({{messagesDate.length}})</h3>
+        <ul class="m-t-1 neo-distance1 temp-size1">
+            <li *ngFor="let date of messagesDate" (click)="test(date)" #date>
+                {{date | date:'fullDate' :'' :'fr'}} à {{date | date:'shortTime' :'' :'fr'}}
+            </li>
+        </ul>
+        <div class="neo-distance1 temp-size1"></div>
+        <div class="neo-distance1 temp-size1"></div>
+    
+    </div>
+    <div class="wrapper">
+        <div class="flex-container m-t-3">
+            <div *ngFor="let message of messages" class="neo-distance temp-size">
+                <p>from: <span>{{message.messagePortion.messageFrom}}</span></p>
+            </div>
         </div>
     </div>
 </div>
-
-

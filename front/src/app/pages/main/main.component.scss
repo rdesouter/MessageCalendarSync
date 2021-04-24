@@ -2,6 +2,11 @@ $black: #000;
 $white: #fff;
 $primary: #8bb9e7;
 
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
 .wrapper {
     display: flex;
     width: 75%;
@@ -17,13 +22,57 @@ $primary: #8bb9e7;
 .neo-distance {
     border-radius: 15px;
     background: #ebebeb;
-    box-shadow:  11px 11px 22px #dbdbdb,
-                 -11px -11px 22px #fbfbfb;
+    // background: #ecf3ff; //F0F2F5
+    box-shadow:  11px 11px 22px rgb(219, 219, 219),
+                 -11px -11px 22px rgb(251, 251, 251);
     // border-radius: 15px;
     // background: linear-gradient(145deg, #d4d4d4, #fbfbfb);
     // box-shadow:  6px 6px 16px #dfdfdf,
     //              -6px -6px 16px #f7f7f7;
     // border: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+//blue facebook #ecf3ff
+
+.message-list {
+    border: 1px solid rgb(241, 241, 241);
+    border-radius: 15px;
+    margin: 50px 35px;
+    // background: #ebebeb;
+    // box-shadow: 
+    // 11px 11px 22px rgb(219, 219, 219),
+    // -11px -11px 22px rgb(251, 251, 251);
+    box-shadow: 
+    4px 4px 8px rgb(219, 219, 219), 
+    -11px -11px 22px rgb(251, 251, 251), 
+    inset 4px 4px 8px 0 rgb(0 0 0 / 12%), 
+    inset -12px -12px 32px 0 rgb(255 255 255 / 75%);
+    height: 80vh;
+}
+.message-list h3 {
+    padding: 10px 25px;
+    border-bottom: 1px solid #d8d8d8;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    // background-color: rgba(139, 139, 139, 0.1);
+}
+.message-list ul {
+    // padding: 1em 0;
+}
+
+.message-list ul li {
+    padding: 8px 15px;
+    position: relative;
+    left: 0;
+    transition: left 500ms ease;
+}
+.message-list ul li:hover {
+    background-color: #8bb9e7;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    left: 10px;
+    transition: all 150ms ease-in-out;
 }
 
 .temp-size {
@@ -34,6 +83,19 @@ $primary: #8bb9e7;
     padding: 10px 15px;
     color: darken($white, $amount: 35);
     word-wrap: break-word;
+}
+.temp-size1 {
+    // height: 100px;
+    width: 80%;
+    margin:2em 1.5em;
+}
+
+.neo-distance1 {
+    border-radius: 15px;
+    background: #ebebeb;
+    // background: #ecf3ff; //F0F2F5
+    box-shadow:  4px 4px 8px rgb(219, 219, 219),
+                 -5px -5px 12px rgb(251, 251, 251);
 }
 
 .temp-size span{

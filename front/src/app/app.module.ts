@@ -10,6 +10,9 @@ import { MainComponent } from './pages/main/main.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms' 
 import { BasicAuthInterceptorService } from './service/basic-auth-interceptor.service';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr, 'fr');
 
 @NgModule({
   declarations: [
